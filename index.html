@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arsenal de Irán — Misiles y Drones</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080a0d;--surface:#0f1217;--card:#13171e;--card-hover:#191e28;--border:#1e2530;--border-bright:#2d3545;--gold:#c8972a;--red:#e63946;--blue:#4a90d9;--green:#3db87a;--purple:#b06cff;--orange:#f4722b;--teal:#20b2aa;--text:#dde2ea;--muted:#6b7585;--muted2:#4a5260;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);font-family:'Barlow',sans-serif;color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 100% 60% at 50% -5%,rgba(200,151,42,.07) 0%,transparent 55%),radial-gradient(ellipse 50% 50% at 5% 50%,rgba(230,57,70,.04) 0%,transparent 50%),radial-gradient(ellipse 50% 50% at 95% 80%,rgba(74,144,217,.04) 0%,transparent 50%);pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.page{position:relative;z-index:1;}
+/* HERO */
+.hero{text-align:center;padding:56px 24px 40px;}
+.hero-eyebrow{font-size:10px;letter-spacing:6px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:16px;}
+.hero h1{font-family:'Bebas Neue',cursive;font-size:clamp(64px,10vw,120px);letter-spacing:5px;line-height:.88;color:var(--text);}
+.hero h1 em{font-style:normal;color:var(--gold);display:block;}
+.hero-sub{margin-top:16px;font-size:13px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;font-weight:300;}
+.hero-line{width:200px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:20px auto 0;}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.stat{background:var(--surface);padding:20px 16px;text-align:center;}
+.stat-n{font-family:'Bebas Neue',cursive;font-size:44px;color:var(--gold);line-height:1;}
+.stat-l{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+/* FILTER */
+.filter-bar{display:flex;gap:8px;padding:20px 32px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--border);}
+.filter-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-right:4px;}
+.filter-btn{padding:6px 14px;font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;border:1px solid var(--border-bright);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);}
+.filter-btn:hover{color:var(--text);border-color:var(--muted);}
+.filter-btn.active{color:#000!important;}
+.filter-btn.f-all.active{background:var(--gold);border-color:var(--gold);}
+.filter-btn.f-srbm.active{background:var(--orange);border-color:var(--orange);}
+.filter-btn.f-mrbm.active{background:var(--red);border-color:var(--red);}
+.filter-btn.f-hiper.active{background:var(--purple);border-color:var(--purple);}
+.filter-btn.f-crucero.active{background:var(--blue);border-color:var(--blue);}
+.filter-btn.f-dron.active{background:var(--teal);border-color:var(--teal);}
+.filter-btn.f-anti.active{background:var(--green);border-color:var(--green);}
+.filter-btn.f-sam.active{background:var(--gold);border-color:var(--gold);}
+/* LAYOUT */
+.main{display:grid;grid-template-columns:1fr 380px;gap:0;min-height:70vh;}
+.missile-list{padding:0 0 40px;border-right:1px solid var(--border);}
+.category-header{display:flex;align-items:center;gap:12px;padding:12px 28px 9px;background:rgba(8,10,13,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);}
+.cat-pip{width:8px;height:22px;flex-shrink:0;}
+.category-header h2{font-family:'Bebas Neue',cursive;font-size:17px;letter-spacing:3px;color:var(--text);}
+.category-header span{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-left:auto;}
+.missile-row{display:grid;grid-template-columns:50px 1fr auto;align-items:center;gap:0;padding:0 28px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;min-height:66px;position:relative;}
+.missile-row::after{content:'→';position:absolute;right:28px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--muted2);opacity:0;transition:all .2s;}
+.missile-row:hover::after{opacity:1;right:20px;}
+.missile-row:hover{background:var(--card);}
+.missile-row.hidden{display:none;}
+.row-icon{display:flex;align-items:center;justify-content:center;padding:12px 0;}
+.row-info{padding:11px 40px 11px 0;}
+.row-name{font-family:'Bebas Neue',cursive;font-size:17px;letter-spacing:2px;line-height:1;}
+.row-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.row-badge{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border:1px solid;margin-top:4px;display:inline-block;}
+.row-range{text-align:right;min-width:65px;}
+.row-range-val{font-family:'Bebas Neue',cursive;font-size:19px;letter-spacing:1px;line-height:1;}
+.row-range-unit{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+/* SIDEBAR MINI PREVIEW */
+.detail-panel{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--surface);display:flex;flex-direction:column;}
+.detail-panel::-webkit-scrollbar{width:3px;}
+.detail-panel::-webkit-scrollbar-thumb{background:var(--border-bright);}
+.detail-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--muted2);padding:40px;text-align:center;}
+.detail-empty-icon{font-size:42px;opacity:.25;}
+.detail-empty p{font-size:12px;letter-spacing:2px;text-transform:uppercase;line-height:1.9;}
+.detail-empty small{font-size:11px;color:var(--muted2);margin-top:8px;line-height:1.7;opacity:.7;}
+.preview-content{display:none;flex-direction:column;}
+.preview-content.visible{display:flex;}
+.preview-hero{padding:18px 18px 14px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.preview-hero::before{content:'';position:absolute;inset:0;opacity:.05;background:radial-gradient(ellipse at top right,currentColor,transparent 70%);}
+.preview-eyebrow{font-size:8px;letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:6px;}
+.preview-name{font-family:'Bebas Neue',cursive;font-size:26px;letter-spacing:2px;line-height:1;}
+.preview-arabic{font-size:11px;color:var(--muted);margin-top:2px;font-style:italic;}
+.preview-desc{margin-top:9px;font-size:11.5px;color:#9aabb8;line-height:1.75;font-weight:300;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
+.preview-specs{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.spec-cell{background:var(--card);padding:9px 7px;text-align:center;}
+.spec-v{font-family:'Bebas Neue',cursive;font-size:16px;letter-spacing:1px;line-height:1;}
+.spec-k{font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+.preview-open-btn{margin:14px 18px;padding:11px;background:transparent;border:1px solid var(--border-bright);color:var(--muted);font-family:'Barlow',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .2s;width:calc(100% - 36px);}
+.preview-open-btn:hover{background:var(--card-hover);color:var(--text);border-color:var(--muted);}
+
+/* ═══ MODAL ═══ */
+.modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(4,6,9,.95);backdrop-filter:blur(12px);display:none;animation:fadeIn .2s ease;}
+.modal-overlay.open{display:flex;}
+.modal{width:100%;max-width:1100px;margin:auto;max-height:100vh;overflow-y:auto;position:relative;}
+.modal::-webkit-scrollbar{width:4px;}
+.modal::-webkit-scrollbar-thumb{background:var(--border-bright);}
+.modal-close{position:fixed;top:20px;right:24px;z-index:1001;background:var(--card);border:1px solid var(--border-bright);color:var(--muted);width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.modal-close:hover{color:var(--text);border-color:var(--muted);}
+/* Modal Hero */
+.m-hero{display:grid;grid-template-columns:1fr 380px;min-height:300px;border-bottom:1px solid var(--border);}
+.m-hero-left{padding:48px 40px;position:relative;overflow:hidden;}
+.m-hero-left::before{content:'';position:absolute;inset:0;opacity:.07;background:radial-gradient(ellipse at top left,currentColor,transparent 60%);}
+.m-eyebrow{font-size:9px;letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:10px;}
+.m-name{font-family:'Bebas Neue',cursive;font-size:clamp(42px,5vw,72px);letter-spacing:4px;line-height:.92;}
+.m-arabic{font-size:14px;color:var(--muted);margin-top:6px;font-style:italic;font-weight:300;}
+.m-desc{margin-top:16px;font-size:14px;color:#b0bec8;line-height:1.85;font-weight:300;max-width:520px;}
+.m-hero-img{position:relative;overflow:hidden;background:var(--card);}
+.m-hero-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(20%) contrast(1.05);transition:filter .3s;}
+.m-hero-img:hover img{filter:grayscale(0%) contrast(1);}
+.m-img-caption{position:absolute;bottom:0;left:0;right:0;padding:8px 12px;background:linear-gradient(transparent,rgba(0,0,0,.8));font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px;}
+.m-img-placeholder{width:100%;height:100%;min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--muted2);}
+.m-img-placeholder-icon{font-size:52px;opacity:.2;}
+.m-img-placeholder p{font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:.5;}
+/* Modal Specs */
+.m-specs{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
+.m-spec{background:var(--card);padding:14px 10px;text-align:center;}
+.m-spec-v{font-family:'Bebas Neue',cursive;font-size:20px;letter-spacing:1px;line-height:1;}
+.m-spec-k{font-size:8px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+/* Modal Body */
+.m-body{display:grid;grid-template-columns:1fr 340px;gap:0;}
+.m-main-col{padding:32px 36px;border-right:1px solid var(--border);}
+.m-side-col{padding:24px 22px;}
+/* Range map */
+.m-range-section{margin-bottom:28px;}
+.m-section-title{font-family:'Bebas Neue',cursive;font-size:16px;letter-spacing:3px;color:var(--muted);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.range-map{background:var(--card);border:1px solid var(--border);border-radius:2px;overflow:hidden;position:relative;}
+.range-bar-container{padding:16px 20px;}
+.range-bar-label{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.range-bar-track{height:8px;background:var(--border-bright);border-radius:4px;overflow:hidden;}
+.range-bar-fill{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.range-comparisons{border-top:1px solid var(--border);}
+.range-comp-row{display:flex;align-items:center;gap:10px;padding:7px 20px;border-bottom:1px solid var(--border);}
+.range-comp-row:last-child{border-bottom:none;}
+.range-comp-name{font-size:11px;color:var(--muted);width:90px;flex-shrink:0;}
+.range-comp-bar{flex:1;height:4px;background:var(--border-bright);border-radius:2px;overflow:hidden;}
+.range-comp-fill{height:100%;border-radius:2px;background:var(--border-bright);}
+.range-comp-val{font-family:'Bebas Neue',cursive;font-size:13px;letter-spacing:1px;color:var(--muted);width:55px;text-align:right;}
+/* History timeline */
+.timeline{position:relative;padding-left:20px;}
+.timeline::before{content:'';position:absolute;left:4px;top:0;bottom:0;width:1px;background:var(--border-bright);}
+.t-event{position:relative;margin-bottom:22px;animation:fadeUp .35s ease both;}
+.t-event::before{content:'';position:absolute;left:-19px;top:6px;width:8px;height:8px;border-radius:50%;border:1px solid;}
+.t-year{font-family:'Bebas Neue',cursive;font-size:13px;letter-spacing:2px;margin-bottom:3px;}
+.t-tag{display:inline-block;font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:1px 6px;margin-bottom:5px;}
+.t-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.t-desc{font-size:12px;color:#8a9aaa;line-height:1.75;font-weight:300;}
+.tag-uso{background:rgba(74,144,217,.2);color:var(--blue);}
+.tag-logro{background:rgba(61,184,122,.2);color:var(--green);}
+.tag-fallo{background:rgba(230,57,70,.2);color:var(--red);}
+.tag-prueba{background:rgba(200,151,42,.2);color:var(--gold);}
+/* Tech grid */
+.tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:22px;}
+.tech-item{background:var(--card);border:1px solid var(--border);padding:10px 12px;}
+.tech-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.tech-val{font-size:12.5px;font-weight:600;color:var(--text);}
+/* Pros cons */
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.pros-box,.cons-box{padding:14px;background:var(--card);border:1px solid var(--border);}
+.box-title{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);}
+.pros-box .box-title{color:var(--green);}
+.cons-box .box-title{color:var(--red);}
+.box-item{display:flex;gap:7px;font-size:11.5px;color:#8a97a8;line-height:1.65;margin-bottom:7px;font-weight:300;}
+.box-item::before{content:'▸';flex-shrink:0;margin-top:1px;}
+.pros-box .box-item::before{color:var(--green);}
+.cons-box .box-item::before{color:var(--red);}
+/* Geopolitics */
+.geo-text{font-size:13px;color:#a0b0bc;line-height:1.85;font-weight:300;}
+.geo-text p{margin-bottom:14px;}
+/* Modal nav */
+.m-nav{display:flex;justify-content:space-between;align-items:center;padding:16px 36px;border-top:1px solid var(--border);background:var(--surface);}
+.m-nav-btn{display:flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--border-bright);color:var(--muted);padding:9px 16px;font-family:'Barlow',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.m-nav-btn:hover{color:var(--text);border-color:var(--muted);}
+.m-nav-center{font-size:10px;color:var(--muted2);letter-spacing:2px;text-transform:uppercase;}
+/* Tabs inside modal */
+.m-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--card);}
+.m-tab-btn{padding:12px 20px;font-family:'Barlow',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;background:transparent;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;}
+.m-tab-btn:hover{color:var(--text);}
+.m-tab-btn.active{color:var(--text);border-bottom-color:var(--gold);}
+.m-tab-pane{display:none;}
+.m-tab-pane.active{display:block;}
+/* Footer */
+.footer{border-top:1px solid var(--border);padding:18px 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--muted2);}
+/* Animations */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.preview-content.visible .preview-hero,.preview-content.visible .preview-specs{animation:fadeIn .25s ease both;}
+@media(max-width:960px){.main{grid-template-columns:1fr;}.detail-panel{position:static;height:auto;}.stats{grid-template-columns:repeat(2,1fr);}.m-hero{grid-template-columns:1fr;}.m-body{grid-template-columns:1fr;}.m-specs{grid-template-columns:repeat(3,1fr);}.m-main-col{border-right:none;border-bottom:1px solid var(--border);}}
+@media(max-width:600px){.missile-row{padding:0 16px;}.category-header{padding:12px 16px 9px;}.filter-bar{padding:14px 16px;}.m-hero-left{padding:28px 20px;}.m-main-col{padding:22px 20px;}.m-side-col{padding:18px 16px;}.m-nav{padding:14px 20px;}}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="hero">
+  <div class="hero-eyebrow">Análisis · Capacidades Militares · República Islámica de Irán</div>
+  <h1>ARSENAL<em>IRANÍ</em></h1>
+  <div class="hero-sub">Misiles Balísticos · Crucero · Antibuque · Antiaéreos · Drones de Ataque</div>
+  <div class="hero-line"></div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="stat-n">~2.500</div><div class="stat-l">Misiles estimados (2026)</div></div>
+  <div class="stat"><div class="stat-n">2.000</div><div class="stat-l">Km alcance máximo</div></div>
+  <div class="stat"><div class="stat-n">1984</div><div class="stat-l">Primer misil adquirido</div></div>
+  <div class="stat"><div class="stat-n">20+</div><div class="stat-l">Tipos operativos</div></div>
+</div>
+<div class="filter-bar">
+  <span class="filter-label">Filtrar:</span>
+  <button class="filter-btn f-all active" onclick="setFilter('all',this)">Todos</button>
+  <button class="filter-btn f-srbm" onclick="setFilter('srbm',this)">SRBM</button>
+  <button class="filter-btn f-mrbm" onclick="setFilter('mrbm',this)">MRBM</button>
+  <button class="filter-btn f-hiper" onclick="setFilter('hiper',this)">Hipersónico</button>
+  <button class="filter-btn f-crucero" onclick="setFilter('crucero',this)">Crucero</button>
+  <button class="filter-btn f-dron" onclick="setFilter('dron',this)">Drones UAV</button>
+  <button class="filter-btn f-anti" onclick="setFilter('anti',this)">Antibuque</button>
+  <button class="filter-btn f-sam" onclick="setFilter('sam',this)">Antiaéreos</button>
+</div>
+<div class="main">
+<div class="missile-list" id="missileList">
+<!-- ═══ SRBM ═══ -->
+<div class="category-header" data-cat="srbm"><div class="cat-pip" style="background:var(--orange)"></div><h2>BALÍSTICOS CORTO ALCANCE (SRBM)</h2><span>300 – 1.000 km</span></div>
+
+<div class="missile-row cat-srbm" data-id="shahab12" onclick="selectMissile('shahab12',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><polygon points="9,1 13,7 5,7" fill="var(--orange)"/><rect x="5" y="7" width="8" height="21" fill="var(--orange)" rx="1"/><polygon points="2,28 5,22 13,22 16,28" fill="var(--orange)" opacity=".6"/><polygon points="0,29 5,26 5,36 0,37" fill="var(--orange)" opacity=".4"/><polygon points="18,29 13,26 13,36 18,37" fill="var(--orange)" opacity=".4"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--orange)">SHAHAB-1 / 2</div><div class="row-sub">شهاب — Scud soviético · Primer arsenal iraní</div><span class="row-badge" style="color:var(--orange);border-color:rgba(244,114,43,.35)">SRBM · 330–500 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--orange)">500</div><div class="row-range-unit">km</div></div>
+</div>
+
+<div class="missile-row cat-srbm" data-id="qiam" onclick="selectMissile('qiam',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><polygon points="9,1 13,7 5,7" fill="var(--orange)"/><rect x="5" y="7" width="8" height="23" fill="var(--orange)" rx="1"/><polygon points="2,30 5,24 13,24 16,30" fill="var(--orange)" opacity=".6"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--orange)">QIAM-1</div><div class="row-sub">قیام — «Levantamiento» · Sin aletas</div><span class="row-badge" style="color:var(--orange);border-color:rgba(244,114,43,.35)">SRBM · 750 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--orange)">750</div><div class="row-range-unit">km</div></div>
+</div>
+
+<div class="missile-row cat-srbm" data-id="fateh110" onclick="selectMissile('fateh110',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><polygon points="9,1 12,6 6,6" fill="var(--orange)"/><rect x="6" y="6" width="6" height="23" fill="var(--orange)" rx="1"/><rect x="2" y="12" width="4" height="6" fill="var(--orange)" opacity=".45" rx="1"/><rect x="12" y="12" width="4" height="6" fill="var(--orange)" opacity=".45" rx="1"/><polygon points="3,29 6,23 12,23 15,29" fill="var(--orange)" opacity=".6"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--orange)">FATEH-110</div><div class="row-sub">فاتح — «Conquistador» · Sólido / preciso</div><span class="row-badge" style="color:var(--orange);border-color:rgba(244,114,43,.35)">SRBM · 300 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--orange)">300</div><div class="row-range-unit">km</div></div>
+</div>
+
+<div class="missile-row cat-srbm" data-id="zolfaghar" onclick="selectMissile('zolfaghar',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><polygon points="9,1 13,8 5,8" fill="var(--orange)"/><rect x="5" y="8" width="8" height="21" fill="var(--orange)" rx="1"/><polygon points="2,29 5,23 13,23 16,29" fill="var(--orange)" opacity=".6"/><polygon points="0,30 5,27 5,37 0,38" fill="var(--orange)" opacity=".4"/><polygon points="18,30 13,27 13,37 18,38" fill="var(--orange)" opacity=".4"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--orange)">ZOLFAGHAR</div><div class="row-sub">ذوالفقار — «Espada de Alí» · 1er uso externo</div><span class="row-badge" style="color:var(--orange);border-color:rgba(244,114,43,.35)">SRBM · 700 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--orange)">700</div><div class="row-range-unit">km</div></div>
+</div>
+
+<!-- ═══ MRBM ═══ -->
+<div class="category-header" data-cat="mrbm"><div class="cat-pip" style="background:var(--red)"></div><h2>BALÍSTICOS MEDIO ALCANCE (MRBM)</h2><span>1.000 – 3.000 km</span></div>
+
+<div class="missile-row cat-mrbm" data-id="shahab3" onclick="selectMissile('shahab3',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><polygon points="9,1 13,7 5,7" fill="var(--red)"/><rect x="5" y="7" width="8" height="21" fill="var(--red)" rx="1"/><polygon points="2,28 5,22 13,22 16,28" fill="var(--red)" opacity=".6"/><polygon points="0,29 5,26 5,36 0,37" fill="var(--red)" opacity=".4"/><polygon points="18,29 13,26 13,36 18,37" fill="var(--red)" opacity=".4"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--red)">SHAHAB-3</div><div class="row-sub">شهاب ۳ — Base del programa · Alcanza Israel</div><span class="row-badge" style="color:var(--red);border-color:rgba(230,57,70,.35)">MRBM · 1.300 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--red)">1.300</div><div class="row-range-unit">km</div></div>
+</div>
+
+<div class="missile-row cat-mrbm" data-id="ghadr" onclick="selectMissile('ghadr',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><polygon points="9,1 13,7 5,7" fill="var(--red)"/><rect x="5" y="7" width="8" height="21" fill="var(--red)" rx="1"/><rect x="1" y="13" width="4" height="7" fill="var(--red)" opacity=".5" rx="1"/><rect x="13" y="13" width="4" height="7" fill="var(--red)" opacity=".5" rx="1"/><polygon points="2,28 5,22 13,22 16,28" fill="var(--red)" opacity=".6"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--red)">GHADR-110</div><div class="row-sub">قدر — Más de 300 unidades · Impactó Nevatim</div><span class="row-badge" style="color:var(--red);border-color:rgba(230,57,70,.35)">MRBM · 1.950 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--red)">1.950</div><div class="row-range-unit">km</div></div>
+</div>
+
+<div class="missile-row cat-mrbm" data-id="emad" onclick="selectMissile('emad',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><polygon points="9,1 14,8 4,8" fill="var(--red)"/><rect x="4" y="8" width="10" height="21" fill="var(--red)" rx="1"/><polygon points="1,29 4,23 14,23 17,29" fill="var(--red)" opacity=".6"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--red)">EMAD</div><div class="row-sub">عماد — 1er guiado terminal activo iraní</div><span class="row-badge" style="color:var(--red);border-color:rgba(230,57,70,.35)">MRBM · 1.700 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--red)">1.700</div><div class="row-range-unit">km</div></div>
+</div>
+
+<div class="missile-row cat-mrbm" data-id="sejjil" onclick="selectMissile('sejjil',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><ellipse cx="9" cy="4" rx="5" ry="4" fill="var(--red)"/><rect x="3" y="7" width="12" height="23" fill="var(--red)" rx="2"/><polygon points="0,30 3,24 15,24 18,30" fill="var(--red)" opacity=".6"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--red)">SEJJIL-2</div><div class="row-sub">سجیل — Sólido 2 etapas · &lt;5 min preparación</div><span class="row-badge" style="color:var(--red);border-color:rgba(230,57,70,.35)">MRBM · 2.500 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--red)">2.500</div><div class="row-range-unit">km</div></div>
+</div>
+
+<div class="missile-row cat-mrbm" data-id="khorramshahr" onclick="selectMissile('khorramshahr',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><ellipse cx="9" cy="4" rx="5" ry="4" fill="var(--red)"/><rect x="4" y="7" width="10" height="22" fill="var(--red)" rx="1"/><polygon points="1,29 4,23 14,23 17,29" fill="var(--red)" opacity=".6"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--red)">KHORRAMSHAHR</div><div class="row-sub">خرمشهر — MIRV · Generaciones 1-3</div><span class="row-badge" style="color:var(--red);border-color:rgba(230,57,70,.35)">MRBM · 2.000 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--red)">2.000</div><div class="row-range-unit">km</div></div>
+</div>
+
+<div class="missile-row cat-mrbm" data-id="kheibar" onclick="selectMissile('kheibar',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><ellipse cx="9" cy="3" rx="6" ry="3" fill="var(--red)"/><rect x="3" y="5" width="12" height="25" fill="var(--red)" rx="2"/><polygon points="0,30 3,24 15,24 18,30" fill="var(--red)" opacity=".6"/><circle cx="9" cy="12" r="2" fill="rgba(255,255,255,.2)"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--red)">KHEIBAR (Khorramshahr-4)</div><div class="row-sub">خیبر — 1.500 kg ojiva · Usado mar. 2026</div><span class="row-badge" style="color:var(--red);border-color:rgba(230,57,70,.35)">MRBM · 2.000 km · ★</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--red)">2.000</div><div class="row-range-unit">km</div></div>
+</div>
+
+<!-- ═══ HIPERSÓNICO ═══ -->
+<div class="category-header" data-cat="hiper"><div class="cat-pip" style="background:var(--purple)"></div><h2>HIPERSÓNICO</h2><span>Mach 13–15 · Nueva generación</span></div>
+
+<div class="missile-row cat-hiper" data-id="fattah" onclick="selectMissile('fattah',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><polygon points="9,1 15,10 3,10" fill="var(--purple)"/><rect x="3" y="10" width="12" height="19" fill="var(--purple)" rx="1"/><polygon points="0,29 3,23 15,23 18,29" fill="var(--purple)" opacity=".6"/><line x1="9" y1="4" x2="9" y2="27" stroke="rgba(255,255,255,.1)" stroke-width="1.5" stroke-dasharray="3,2"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--purple)">FATTAH-1</div><div class="row-sub">فتاح — HGV maniobrable · Mach 13-15</div><span class="row-badge" style="color:var(--purple);border-color:rgba(176,108,255,.35)">Hipersónico · 1.400 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--purple)">1.400</div><div class="row-range-unit">km</div></div>
+</div>
+
+<!-- ═══ CRUCERO ═══ -->
+<div class="category-header" data-cat="crucero"><div class="cat-pip" style="background:var(--blue)"></div><h2>MISILES DE CRUCERO</h2><span>Vuelo rasante · LACM</span></div>
+
+<div class="missile-row cat-crucero" data-id="yaali" onclick="selectMissile('yaali',this)">
+  <div class="row-icon"><svg width="40" height="20" viewBox="0 0 40 20"><path d="M38,10 L5,4 L3,10 L5,14 Z" fill="var(--blue)" opacity=".9"/><path d="M5,4 L1,2 L2,10 L1,17 L5,14" fill="var(--blue)" opacity=".5"/><polygon points="10,4 15,1 18,4" fill="var(--blue)" opacity=".4"/><polygon points="10,14 15,19 18,14" fill="var(--blue)" opacity=".4"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--blue)">YA ALI</div><div class="row-sub">یا علی — Crucero de precisión · CEP ~5 m</div><span class="row-badge" style="color:var(--blue);border-color:rgba(74,144,217,.35)">Crucero LACM · 700 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--blue)">700</div><div class="row-range-unit">km</div></div>
+</div>
+
+<div class="missile-row cat-crucero" data-id="soumar" onclick="selectMissile('soumar',this)">
+  <div class="row-icon"><svg width="40" height="20" viewBox="0 0 40 20"><path d="M38,10 L3,3 L1,10 L3,16 Z" fill="var(--blue)" opacity=".9"/><path d="M3,3 L1,1 L1,10 L1,19 L3,16" fill="var(--blue)" opacity=".5"/><polygon points="12,3 18,0 22,3" fill="var(--blue)" opacity=".4"/><polygon points="12,16 18,20 22,16" fill="var(--blue)" opacity=".4"/><rect x="2" y="8" width="5" height="4" fill="rgba(255,255,255,.2)" rx="1"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--blue)">SOUMAR</div><div class="row-sub">سومار — Derivado Kh-55 · 2.500 km</div><span class="row-badge" style="color:var(--blue);border-color:rgba(74,144,217,.35)">Crucero LACM · 2.500 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--blue)">2.500</div><div class="row-range-unit">km</div></div>
+</div>
+
+<!-- ═══ DRONES ═══ -->
+<div class="category-header" data-cat="dron"><div class="cat-pip" style="background:var(--teal)"></div><h2>DRONES DE ATAQUE (UAV)</h2><span>Loitering · Enjambres · No son misiles</span></div>
+
+<div class="missile-row cat-dron" data-id="shahed136" onclick="selectMissile('shahed136',this)">
+  <div class="row-icon"><svg width="40" height="20" viewBox="0 0 40 20"><polygon points="36,10 18,2 2,10 18,16" fill="var(--teal)" opacity=".9"/><polygon points="18,16 11,20 18,18 25,20" fill="var(--teal)" opacity=".5"/><circle cx="32" cy="10" r="2.5" fill="var(--teal)" opacity=".6"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--teal)">SHAHED-136</div><div class="row-sub">شاهد — Dron kamikaze · ~$20.000/ud</div><span class="row-badge" style="color:var(--teal);border-color:rgba(32,178,170,.35)">Dron Loitering UAV · 2.500 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--teal)">2.500</div><div class="row-range-unit">km</div></div>
+</div>
+
+<!-- ═══ ANTIBUQUE ═══ -->
+<div class="category-header" data-cat="anti"><div class="cat-pip" style="background:var(--green)"></div><h2>ANTIBUQUE</h2><span>Golfo Pérsico · Estrecho de Ormuz</span></div>
+
+<div class="missile-row cat-anti" data-id="noor" onclick="selectMissile('noor',this)">
+  <div class="row-icon"><svg width="40" height="20" viewBox="0 0 40 20"><path d="M38,10 L6,5 L4,10 L6,14 Z" fill="var(--green)" opacity=".9"/><path d="M6,5 L1,3 L3,10 L1,17 L6,14" fill="var(--green)" opacity=".5"/><polygon points="13,5 19,2 23,5" fill="var(--green)" opacity=".4"/><polygon points="13,14 19,18 23,14" fill="var(--green)" opacity=".4"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--green)">NOOR</div><div class="row-sub">نور — Sea-skimming 5-7m · Hundió INS Hanit</div><span class="row-badge" style="color:var(--green);border-color:rgba(61,184,122,.35)">Antibuque AShM · 170 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--green)">170</div><div class="row-range-unit">km</div></div>
+</div>
+
+<div class="missile-row cat-anti" data-id="khalij" onclick="selectMissile('khalij',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><polygon points="9,1 13,7 5,7" fill="var(--green)"/><rect x="5" y="7" width="8" height="20" fill="var(--green)" rx="1"/><polygon points="2,27 5,21 13,21 16,27" fill="var(--green)" opacity=".7"/><circle cx="9" cy="12" r="1.8" fill="rgba(255,255,255,.25)"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--green)">KHALIJ FARS</div><div class="row-sub">خلیج فارس — Balístico antibuque (ASBM)</div><span class="row-badge" style="color:var(--green);border-color:rgba(61,184,122,.35)">ASBM único · 300 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--green)">300</div><div class="row-range-unit">km</div></div>
+</div>
+
+<!-- ═══ ANTIAÉREOS ═══ -->
+<div class="category-header" data-cat="sam"><div class="cat-pip" style="background:var(--gold)"></div><h2>SISTEMAS ANTIAÉREOS (SAM)</h2><span>Defensa de área · Capas múltiples</span></div>
+
+<div class="missile-row cat-sam" data-id="s200" onclick="selectMissile('s200',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><polygon points="9,1 12,7 6,7" fill="var(--gold)"/><rect x="6" y="7" width="6" height="24" fill="var(--gold)" rx="1"/><rect x="1" y="11" width="5" height="4" fill="var(--gold)" opacity=".4" rx="1"/><rect x="12" y="11" width="5" height="4" fill="var(--gold)" opacity=".4" rx="1"/><polygon points="3,31 6,25 12,25 15,31" fill="var(--gold)" opacity=".6"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--gold)">S-200 ANGARA</div><div class="row-sub">С-200 — SAM ruso · Operativo desde 1997</div><span class="row-badge" style="color:var(--gold);border-color:rgba(200,151,42,.35)">SAM Largo Alcance · 300 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--gold)">300</div><div class="row-range-unit">km</div></div>
+</div>
+
+<div class="missile-row cat-sam" data-id="s300" onclick="selectMissile('s300',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><polygon points="9,1 12,7 6,7" fill="var(--gold)"/><rect x="6" y="7" width="6" height="26" fill="var(--gold)" rx="2"/><rect x="1" y="10" width="5" height="5" fill="var(--gold)" opacity=".5" rx="1"/><rect x="12" y="10" width="5" height="5" fill="var(--gold)" opacity=".5" rx="1"/><polygon points="3,33 6,26 12,26 15,33" fill="var(--gold)" opacity=".6"/><circle cx="9" cy="16" r="1.5" fill="rgba(255,255,255,.3)"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--gold)">S-300PMU-2</div><div class="row-sub">С-300 — Ruso · Desactivado por Israel 2024</div><span class="row-badge" style="color:var(--gold);border-color:rgba(200,151,42,.35)">SAM L/A · 150 km · ⚠ Estado degradado</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--gold)">150</div><div class="row-range-unit">km</div></div>
+</div>
+
+<div class="missile-row cat-sam" data-id="bavar" onclick="selectMissile('bavar',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><polygon points="9,1 12,7 6,7" fill="var(--gold)"/><rect x="6" y="7" width="6" height="25" fill="var(--gold)" rx="1"/><rect x="1" y="12" width="5" height="5" fill="var(--gold)" opacity=".4" rx="1"/><rect x="12" y="12" width="5" height="5" fill="var(--gold)" opacity=".4" rx="1"/><polygon points="3,32 6,26 12,26 15,32" fill="var(--gold)" opacity=".6"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--gold)">BAVAR-373</div><div class="row-sub">باور — S-300 iraní · Equiv. doméstico</div><span class="row-badge" style="color:var(--gold);border-color:rgba(200,151,42,.35)">SAM Largo Alcance · 200 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--gold)">200</div><div class="row-range-unit">km</div></div>
+</div>
+
+<div class="missile-row cat-sam" data-id="sayyad" onclick="selectMissile('sayyad',this)">
+  <div class="row-icon"><svg width="18" height="38" viewBox="0 0 18 38"><polygon points="9,1 12,7 6,7" fill="var(--gold)"/><rect x="6" y="7" width="6" height="23" fill="var(--gold)" rx="1"/><rect x="1" y="14" width="5" height="8" fill="var(--gold)" opacity=".45" rx="1"/><rect x="12" y="14" width="5" height="8" fill="var(--gold)" opacity=".45" rx="1"/><polygon points="3,30 6,24 12,24 15,30" fill="var(--gold)" opacity=".6"/></svg></div>
+  <div class="row-info"><div class="row-name" style="color:var(--gold)">SAYYAD-3</div><div class="row-sub">صیاد — «Cazador» · SAM medio alcance iraní</div><span class="row-badge" style="color:var(--gold);border-color:rgba(200,151,42,.35)">SAM Medio Alcance · 120 km</span></div>
+  <div class="row-range"><div class="row-range-val" style="color:var(--gold)">120</div><div class="row-range-unit">km</div></div>
+</div>
+
+</div><!-- /missile-list -->
+<div class="detail-panel" id="detailPanel">
+  <div class="detail-empty" id="detailEmpty">
+    <div class="detail-empty-icon">⬡</div>
+    <p>Selecciona un sistema<br>para ver detalles</p>
+    <small>Haz clic en cualquier misil<br>para abrir su ficha completa</small>
+  </div>
+  <div class="preview-content" id="previewContent">
+    <div class="preview-hero" id="pvHero">
+      <div class="preview-eyebrow" id="pvEye"></div>
+      <div class="preview-name" id="pvName"></div>
+      <div class="preview-arabic" id="pvArabic"></div>
+      <div class="preview-desc" id="pvDesc"></div>
+    </div>
+    <div class="preview-specs" id="pvSpecs"></div>
+    <button class="preview-open-btn" id="pvOpenBtn" onclick="openModal()">▶ &nbsp; Ver ficha completa</button>
+  </div>
+</div>
+</div><!-- /main -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modalContent">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="m-hero">
+      <div class="m-hero-left" id="mHeroLeft">
+        <div class="m-eyebrow" id="mEyebrow"></div>
+        <div class="m-name" id="mName"></div>
+        <div class="m-arabic" id="mArabic"></div>
+        <div class="m-desc" id="mDesc"></div>
+      </div>
+      <div class="m-hero-img" id="mHeroImg"></div>
+    </div>
+    <div class="m-specs" id="mSpecs"></div>
+    <div class="m-tabs">
+      <button class="m-tab-btn active" onclick="mTab('historia',this)">Historia</button>
+      <button class="m-tab-btn" onclick="mTab('tecnologia',this)">Tecnología</button>
+      <button class="m-tab-btn" onclick="mTab('analisis',this)">Análisis</button>
+      <button class="m-tab-btn" onclick="mTab('alcance',this)">Alcance</button>
+      <button class="m-tab-btn" onclick="mTab('geopolitica',this)">Geopolítica</button>
+    </div>
+    <div class="m-body">
+      <div class="m-main-col">
+        <div class="m-tab-pane active" id="mt-historia"></div>
+        <div class="m-tab-pane" id="mt-tecnologia"></div>
+        <div class="m-tab-pane" id="mt-analisis"></div>
+        <div class="m-tab-pane" id="mt-alcance"></div>
+        <div class="m-tab-pane" id="mt-geopolitica"></div>
+      </div>
+      <div class="m-side-col" id="mSideCol"></div>
+    </div>
+    <div class="m-nav">
+      <button class="m-nav-btn" id="mPrevBtn" onclick="navModal(-1)">← Anterior</button>
+      <span class="m-nav-center" id="mNavCenter"></span>
+      <button class="m-nav-btn" id="mNextBtn" onclick="navModal(1)">Siguiente →</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>⚠️ Contenido informativo y educativo · Fuentes: CSIS, IISS, Iran Watch, Jane's Defence, FAS, Wikipedia · Imágenes: Wikimedia Commons (dominio público / CC)</span>
+  <span>Actualizado · Marzo 2026</span>
+</div>
+</div><!-- /page -->
+<script>
+
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const D = {
+shahab12:{name:"SHAHAB-1 / SHAHAB-2",arabic:"شهاب — «Meteoro» · Primeros misiles iraníes",type:"SRBM · Derivados del Scud-B soviético",color:"var(--orange)",desc:"Los Shahab-1 y Shahab-2 son los cimientos históricos del arsenal balístico iraní. Obtenidos de Libia en 1984 durante la guerra con Irak y posteriormente fabricados en el país con ayuda norcoreana, son derivados directos del Scud-B soviético. Aunque tecnológicamente obsoletos, siguen en servicio en grandes cantidades y han sido transferidos masivamente a proxies iraníes en toda la región.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Shahab-1_missile.jpg/800px-Shahab-1_missile.jpg",caption:"Shahab-1 en desfile militar · Teherán"},specs:[{v:"330 km",k:"Alcance Sh-1"},{v:"500 km",k:"Alcance Sh-2"},{v:"985 kg",k:"Carga útil"},{v:"Líquido",k:"Propulsión"},{v:"~1.000 m",k:"CEP aprox."},{v:"1984",k:"1ª adquisición"}],range:{val:"330–500 km",pct:15,comps:[{n:"Patriot PAC-3",km:160,pct:29},{n:"S-300",km:150,pct:27},{n:"Qiam-1",km:750,pct:100}]},
+history:[{year:"1984",tag:"logro",title:"Primera adquisición: Scuds de Libia",desc:"Irán obtiene 20 misiles Scud-B de Libia durante la guerra contra Irak. Son los primeros misiles balísticos del arsenal iraní, que hasta entonces no disponía de capacidad balística estratégica."},{year:"1985",tag:"uso",title:"Guerra de las Ciudades (Irán-Iraq)",desc:"Irán lanza Scuds contra Bagdad. Irak responde con sus propios misiles. Ambas partes atacan ciudades civiles, iniciando la primera 'guerra de misiles' moderna de Oriente Medio con miles de víctimas civiles."},{year:"1990s",tag:"logro",title:"Producción doméstica con ayuda norcoreana",desc:"Irán reverse-enginerea los Scuds con ayuda de Corea del Norte y China para producirlos localmente, bautizándolos Shahab-1 (330 km) y Shahab-2 (500 km). Nace el programa de misiles balísticos iraní."},{year:"2020s",tag:"uso",title:"Transferidos masivamente a proxies regionales",desc:"A pesar de su obsolescencia técnica, variantes del Shahab son usados por milicias hutíes en Yemen (como Burkan) y por Hezbolá en el Líbano, en ataques contra Arabia Saudí e Israel."}],
+tech:[{l:"Origen",v:"Scud-B soviético (R-17)"},{l:"Propulsante",v:"Combustible líquido (keroseno)"},{l:"Guiado",v:"Inercial simple (giroscopio)"},{l:"Plataforma",v:"TEL MAZ-543 (8×8)"},{l:"Tiempo preparación",v:"45-60 minutos"},{l:"Proliferado a",v:"Houthis Yemen, Hezbolá"}],
+pros:["Disponibles en muy grandes cantidades","Probados en combate desde los años 80","Fáciles de operar por fuerzas irregulares","Transferidos masivamente a proxies en toda la región"],
+cons:["CEP de ~1.000 m: solo útiles contra ciudades","Combustible líquido: lentos y vulnerables en rampa","Tecnología de los 60: interceptados fácilmente por Patriot","Rastreables por satélite durante preparación"],
+geo:"<p>Los Shahab-1 y Shahab-2 fueron el punto de partida de la doctrina iraní de 'deterrencia asimétrica': la capacidad de amenazar a cualquier adversario regional sin depender de una fuerza aérea moderna. Irán nunca ha tenido la capacidad aérea de sus rivales regionales (Arabia Saudí, Israel) en potencia y modernidad, pero mediante la proliferación masiva de misiles baratos y fáciles de operar ha compensado esa asimetría.</p><p>La transferencia de estos misiles a proxies como los hutíes yemenitas y Hezbolá ha demostrado ser uno de los vectores de influencia más efectivos de Irán: al dotar a actores no estatales de capacidad balística, Irán puede amenazar a Arabia Saudí, Israel y las bases de EE.UU. en la región sin comprometer directamente sus propias fuerzas.</p>"},
+
+qiam:{name:"QIAM-1",arabic:"قیام — «Levantamiento»",type:"SRBM · Sin aletas · Ojiva maniobrable MaRV",color:"var(--orange)",desc:"El Qiam-1 es notable por ser el primer misil iraní sin aletas estabilizadoras de cola, lo que reduce su sección radar y lo hace más difícil de rastrear. Deriva del Shahab-2, pero con un sistema de guiado moderno y una ojiva maniobrable (MaRV) en la fase terminal que dificulta significativamente su intercepción.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Qiam_missile.jpg/640px-Qiam_missile.jpg",caption:"Misil Qiam-1 en TEL · IRGC"},specs:[{v:"750 km",k:"Alcance"},{v:"750 kg",k:"Carga útil"},{v:"Líquido",k:"Propulsión"},{v:"Sin aletas",k:"Diseño único"},{v:"~100 m",k:"CEP aprox."},{v:"2010",k:"1er ensayo"}],range:{val:"750 km",pct:25,comps:[{n:"Shahab-2",km:500,pct:67},{n:"Fateh-110",km:300,pct:40},{n:"Zolfaghar",km:700,pct:93}]},
+history:[{year:"2010",tag:"prueba",title:"Presentación — primer SRBM iraní sin aletas",desc:"El Ministerio de Defensa iraní presenta el Qiam-1. La ausencia de aletas estabilizadoras reduce la sección radar y elimina puntos de fallo mecánico, siendo una innovación real respecto a los Scud derivados anteriores."},{year:"2017",tag:"uso",title:"Primer uso en combate externo — Siria",desc:"Junto con misiles Zolfaghar, Irán lanzó Qiam-1 desde Kermanshah contra objetivos del ISIS en Deir ez-Zor. Fue uno de los primeros usos de misiles iraníes en conflicto externo."},{year:"2020",tag:"uso",title:"Ataque contra Al-Asad y Erbil — Irak",desc:"Tras el asesinato de Qasem Soleimani, Irán lanzó ~22 balísticos contra bases de EE.UU. El Qiam mejorado con MaRV causó más de 100 casos de lesión cerebral traumática entre soldados estadounidenses."},{year:"2024",tag:"uso",title:"Empleado en ataques 'Promesa Verdadera' contra Israel",desc:"Variantes del Qiam formaron parte de los ataques de abril y octubre de 2024 contra territorio israelí."}],
+tech:[{l:"Origen",v:"Evolución del Shahab-2/Scud"},{l:"Novedad",v:"Sin aletas (menor sección radar)"},{l:"Ojiva",v:"MaRV — maniobrable en terminal"},{l:"Guiado",v:"INS + guiado terminal activo"},{l:"Propulsante",v:"Combustible líquido"},{l:"Exportado a",v:"Houthis Yemen (como 'Burkan')"}],
+pros:["Sin aletas: menor firma radar que otros Scud-derivados","Ojiva MaRV mejora precisión y dificulta intercepción","Gran número de unidades en servicio","Base para versiones exportadas a proxies (Burkan hutí)"],
+cons:["Combustible líquido: ~45 min de preparación","Alcance de 750 km limitado estratégicamente","Tecnología conocida por todos los servicios de inteligencia","TELs visibles para el despliegue"],
+geo:"<p>El Qiam-1 representa la primera genuina evolución iraní de la tecnología Scud, con la decisión de eliminar las aletas estabilizadoras —algo que diferencia los diseños iraníes de casi todos los derivados Scud del mundo. Esta decisión técnica tiene un beneficio táctico real: el radar de seguimiento de los sistemas Patriot utiliza las aletas como punto de referencia para calcular la trayectoria del misil y dirigir el interceptor.</p><p>La transferencia del diseño a los hutíes yemenitas, que lo operan como misil 'Burkan', convirtió al Qiam-1 en una de las armas más problemáticas del conflicto yemení: los Burkan amenazaron el aeropuerto de Riad y otras instalaciones saudíes, forzando a Arabia Saudí a desplegar sistemas Patriot en docenas de locaciones y a gastar cientos de millones en interceptores que cuestan 10-20 veces más que los misiles atacantes.</p>"},
+
+fateh110:{name:"FATEH-110",arabic:"فاتح — «Conquistador»",type:"SRBM · Combustible sólido · 10 m CEP",color:"var(--orange)",desc:"El Fateh-110 es el caballo de batalla táctico del arsenal iraní y el misil más proliferado a proxies. Primer SRBM de combustible sólido de desarrollo completamente doméstico iraní, su precisión de ~10 m CEP en la cuarta generación lo equipara con misiles tácticos occidentales, mientras que su coste relativamente bajo permite producirlo y transferirlo en miles de unidades.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Fateh-110.jpg/800px-Fateh-110.jpg",caption:"Fateh-110 en lanzador móvil TEL · Fuerzas Armadas Iraníes"},specs:[{v:"300 km",k:"Alcance"},{v:"500 kg",k:"Carga útil"},{v:"Sólido",k:"Propulsión"},{v:"~10 m",k:"CEP Gen. 4"},{v:"8.86 m",k:"Longitud"},{v:"2001",k:"1er ensayo"}],range:{val:"300 km",pct:10,comps:[{n:"ATACMS",km:300,pct:100},{n:"Iskander",km:500,pct:60},{n:"Zolfaghar",km:700,pct:43}]},
+history:[{year:"1995",tag:"logro",title:"Inicio del programa — independencia tecnológica",desc:"Irán lanza el programa para crear el primer SRBM de combustible sólido completamente doméstico, buscando reducir la dependencia de tecnología norcoreana y china."},{year:"2001",tag:"prueba",title:"Primer ensayo exitoso",desc:"El Fateh-110 es probado con éxito. Su precisión demostrada sorprendió a analistas occidentales."},{year:"2006",tag:"fallo",title:"Sanción de EE.UU. por componentes chinos",desc:"El Tesoro de EE.UU. sanciona a la empresa china Great Wall Industry por contribuir al programa, revelando dependencia parcial de tecnología extranjera."},{year:"2012",tag:"logro",title:"4ª generación con 'precisión milimétrica'",desc:"La cuarta generación del Fateh-110 incorpora guiado de imagen infrarroja que permite un CEP inferior a 10 metros, comparable a armas tácticas de precisión occidentales."},{year:"2018",tag:"uso",title:"Ataque contra base kurda en Iraq (11 muertos)",desc:"Irán lanzó 7 Fateh-110 contra la sede del PDK en Koya, Iraq, demostrando precisión táctica real en combate."},{year:"2020",tag:"uso",title:"Incluido en el ataque contra Al-Asad (Iraq)",desc:"Varios Fateh-110 formaron parte del ataque de represalia por Soleimani, causando daños significativos en la base aérea de EE.UU."}],
+tech:[{l:"Propulsante",v:"Combustible sólido (una etapa)"},{l:"Guiado",v:"INS + IIR terminal (infrarrojo)"},{l:"CEP",v:"~10 metros (4ª generación)"},{l:"Plataforma",v:"TEL móvil 6×6"},{l:"Tiempo preparación",v:"<10 minutos"},{l:"Proliferado a",v:"Hezbolá, Hamas, Siria, Houthis, Rusia"}],
+pros:["~10 m CEP: precisión comparable a armas occidentales","Combustible sólido: listo en <10 min","El misil iraní más proliferado: miles en proxies","Producción 100% iraní e inmune a sanciones"],
+cons:["Alcance de 300 km: solo objetivos cercanos a fronteras iraníes","Patriot/Iron Dome lo interceptan con cierta eficacia","Su proliferación masiva crea riesgos fuera del control iraní","La 4ª generación requiere componentes ópticos difíciles de fabricar"],
+geo:"<p>El Fateh-110 ilustra mejor que cualquier otro sistema la estrategia iraní de 'disuasión extendida mediante proxies': al transferir miles de unidades a Hezbolá, Hamas, los hutíes y milicias iraquíes, Irán ha creado una red de amenazas distribuidas que obliga a sus adversarios a dedicar enormes recursos defensivos en múltiples frentes simultáneamente.</p><p>La transferencia a Rusia para su uso en Ucrania marcó un hito geopolítico: por primera vez en décadas, Irán se convirtió en proveedor de armas para una potencia nuclear en un conflicto europeo, rompiendo las normas de no-proliferación y complicando las relaciones diplomáticas con la UE y EE.UU.</p>"},
+
+zolfaghar:{name:"ZOLFAGHAR",arabic:"ذوالفقار — «La espada bifurcada de Alí»",type:"SRBM · Combustible sólido · Composite",color:"var(--orange)",desc:"El Zolfaghar es la evolución de largo alcance de la familia Fateh-110. Construido con cuerpo de fibra de carbono para reducir peso y alcanzar 700 km con propulsión sólida, fue el primer misil balístico iraní disparado en un conflicto externo: el ataque contra el ISIS en Siria en 2017.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Zulfiqar_missile.jpg/800px-Zulfiqar_missile.jpg",caption:"Misil Zolfaghar en lanzador · Fuerzas Armadas Iraníes"},specs:[{v:"700 km",k:"Alcance"},{v:"590 kg",k:"Carga útil"},{v:"Sólido",k:"Propulsión"},{v:"10.3 m",k:"Longitud"},{v:"4.615 kg",k:"Peso lanzam."},{v:"2016",k:"1er ensayo"}],range:{val:"700 km",pct:23,comps:[{n:"Fateh-110",km:300,pct:43},{n:"Qiam-1",km:750,pct:107},{n:"Iskander-M",km:500,pct:71}]},
+history:[{year:"2016",tag:"prueba",title:"Presentación — entrada inmediata en producción",desc:"Presentado en septiembre de 2016, el Ministro de Defensa iraní confirmó de inmediato su entrada en producción en serie."},{year:"2017",tag:"uso",title:"1er uso en combate externo — Deir ez-Zor, Siria",desc:"El 18 de junio de 2017, Irán lanzó 6 Zolfaghar contra posiciones del ISIS en Siria. Primer uso de un misil balístico iraní en conflicto externo desde 1988. Irán publicó imágenes de los impactos."},{year:"2018",tag:"uso",title:"Segundo ataque contra el ISIS — Abu Kamal",desc:"Tras el atentado terrorista en Ahvaz, Irán lanzó una segunda salva de Zolfaghar y Qiam contra el ISIS en Siria como represalia directa."},{year:"2022",tag:"uso",title:"Transferencia a Rusia para uso en Ucrania",desc:"Informes de inteligencia occidentales confirmaron que Irán envió misiles Fateh-110 y Zolfaghar a Rusia para su uso contra Ucrania, generando nuevas sanciones internacionales."},{year:"2024",tag:"uso",title:"Usado en ataques 'Promesa Verdadera' contra Israel",desc:"Varios Zolfaghar formaron parte del arsenal lanzado en las operaciones de abril y octubre de 2024."}],
+tech:[{l:"Origen",v:"Evolución del Fateh-313"},{l:"Cuerpo",v:"Fibra de carbono (composite)"},{l:"Propulsante",v:"Combustible sólido"},{l:"Ojiva",v:"Separable en vuelo (MaRV)"},{l:"Guiado",v:"INS + terminal activo"},{l:"Plataforma",v:"TEL doble (2 misiles/vehículo)"}],
+pros:["700 km sólido: rápido y preciso","Cuerpo composite: menor firma infrarroja","Ojiva separable: dificulta la intercepción","Probado en combate con impactos confirmados"],
+cons:["Jane's cuestiona su fiabilidad real en combate","No alcanza Israel directamente desde Irán","Transferido a Rusia: uso en conflictos europeos","Producción masiva puede comprometer calidad"],
+geo:"<p>La primera acción de combate del Zolfaghar en 2017 fue cuidadosamente escenificada por Irán como demostración de capacidad ante una audiencia internacional: el IRGC transmitió en vivo el lanzamiento desde una 'ciudad de misiles' subterránea, mostrando simultáneamente la capacidad de operar desde instalaciones protegidas y de alcanzar objetivos a 700 km con precisión verificable. El mensaje era inequívoco: Irán puede atacar cualquier base militar en la región y lo ha probado en combate real.</p><p>La transferencia posterior a Rusia para su uso en Ucrania tuvo consecuencias geopolíticas mucho más allá del conflicto ucraniano: estableció a Irán como proveedor de armas para Rusia en un conflicto con la OTAN, cambiando fundamentalmente las dinámicas de las sanciones y la diplomacia occidental con Teherán.</p>"},
+
+shahab3:{name:"SHAHAB-3",arabic:"شهاب ۳ — «Meteoro»",type:"MRBM · Líquido · Base del programa de largo alcance",color:"var(--red)",desc:"El Shahab-3, primer misil iraní capaz de alcanzar Israel desde territorio iraní, es la piedra angular histórica del programa balístico. Derivado del norcoreano Nodong-1, estableció la doctrina de disuasión regional de Irán y fue el punto de partida para toda la familia de MRBM posteriores.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Shahab3_Missile.jpg/640px-Shahab3_Missile.jpg",caption:"Shahab-3 en desfile · Teherán · 2003"},specs:[{v:"1.300 km",k:"Alcance"},{v:"750 kg",k:"Carga útil"},{v:"Líquido",k:"Propulsión"},{v:"±2.500 m",k:"CEP aprox."},{v:"16 m",k:"Longitud"},{v:"1998",k:"1er ensayo"}],range:{val:"1.300 km",pct:43,comps:[{n:"Nodong-1 (DPRK)",km:1300,pct:100},{n:"Emad",km:1700,pct:76},{n:"Ghadr-110",km:1950,pct:67}]},
+history:[{year:"1998",tag:"prueba",title:"Primer ensayo exitoso — alarma internacional",desc:"Irán prueba el Shahab-3 por primera vez, provocando alarma en Israel y EE.UU. Fue el primer misil iraní con alcance suficiente para atacar Israel desde territorio iraní."},{year:"2000",tag:"logro",title:"Entrada en servicio operativo",desc:"El IRGC declara el sistema operativo. El Shahab-3 cambia el equilibrio estratégico de Oriente Medio."},{year:"2006",tag:"uso",title:"Exhibición masiva en maniobras 'Gran Profeta'",desc:"Irán lanza varios Shahab-3 en demostración de capacidad disuasoria durante las tensiones con Occidente por su programa nuclear."},{year:"2008",tag:"logro",title:"Ojiva 'baby bottle' — mejora de maniobrabilidad",desc:"Se prueba una ojiva en forma de lágrima que mejora la maniobrabilidad en la fase terminal y dificulta la intercepción."},{year:"2024",tag:"uso",title:"Operación 'Promesa Verdadera II' — oct. 2024",desc:"Variantes del Shahab formaron parte del ataque masivo contra Israel. La mayoría fueron interceptados por Arrow-3, David's Sling y sistemas de EE.UU. y RU."}],
+tech:[{l:"Guiado",v:"Inercial (INS)"},{l:"Propulsante",v:"Líquido (UDMH/AK-27)"},{l:"Etapas",v:"Una etapa"},{l:"Origen",v:"Nodong-1 (Corea del Norte)"},{l:"Plataforma",v:"TEL 6×6"},{l:"Preparación",v:"~1 hora"}],
+pros:["Primer MRBM iraní capaz de alcanzar Israel","Tecnología probada y conocida","Producción en masa a bajo coste","Base de toda la familia MRBM moderna"],
+cons:["CEP de ~2.500 m: solo útil contra ciudades","1 hora de preparación: vulnerable a ataque preventivo","Arrow-3 e interceptores de EE.UU. lo interceptan","Completamente superado por sus descendientes"],
+geo:"<p>El Shahab-3 transformó permanentemente la ecuación de seguridad de Israel. Antes de su aparición, Israel era el único actor de Oriente Medio con capacidad de ataque en profundidad sobre Irán, gracias a su fuerza aérea. El Shahab-3 cambió esto: por primera vez, Irán podía alcanzar Tel Aviv desde su territorio.</p><p>Esta capacidad impulsó directamente el desarrollo del sistema Arrow de defensa antimisiles israelí, financiado en parte por EE.UU., y aceleró las negociaciones entre Israel y Washington sobre el escudo antimisiles regional. El Shahab-3 es, por tanto, no solo un arma sino el catalizador de toda una arquitectura de defensa que sigue siendo relevante hoy."},
+
+ghadr:{name:"GHADR-110",arabic:"قدر — «Poderoso / Decreto Divino»",type:"MRBM · +300 unidades · Impactó Nevatim 2024",color:"var(--red)",desc:"El Ghadr-110 es la evolución del Shahab-3 con mayor alcance y triple precisión. Con más de 300 unidades estimadas, es el MRBM más numeroso del arsenal iraní y demostró en octubre de 2024 que puede superar las defensas israelíes e impactar en bases militares.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Ghadr-110_missile.jpg/640px-Ghadr-110_missile.jpg",caption:"Ghadr-110 en desfile · Teherán"},specs:[{v:"1.950 km",k:"Alcance"},{v:"750 kg",k:"Carga útil"},{v:"Líquido",k:"Propulsión"},{v:"~800 m",k:"CEP aprox."},{v:"15.8 m",k:"Longitud"},{v:">300",k:"Unidades est."}],range:{val:"1.950 km",pct:65,comps:[{n:"Shahab-3",km:1300,pct:67},{n:"Emad",km:1700,pct:87},{n:"Sejjil-2",km:2500,pct:78}]},
+history:[{year:"2007",tag:"prueba",title:"Primer ensayo oficial",desc:"Presentado como sucesor mejorado del Shahab-3, con mayor alcance y guiado inercial mejorado que reduce el CEP de ~2.500 m a ~800 m."},{year:"2008",tag:"logro",title:"Producción en serie — misil más numeroso del arsenal",desc:"Con más de 300 unidades estimadas, es el MRBM con mayor disponibilidad numérica del arsenal iraní."},{year:"2015",tag:"uso",title:"Exhibición con 'Muerte a Israel' en hebreo",desc:"Exhibido en desfile en Teherán con inscripción en hebreo. La imagen generó condena internacional pero el mensaje disuasorio era claro."},{year:"2024",tag:"uso",title:"Impactos confirmados en Nevatim y Tel Nof — oct. 2024",desc:"Varios Ghadr-110 superaron las defensas israelíes e impactaron en la base aérea de Nevatim y Tel Nof. Imágenes satelitales confirmaron daños en pistas y hangares."}],
+tech:[{l:"Guiado",v:"INS mejorado + GPS"},{l:"Propulsante",v:"Líquido (UDMH)"},{l:"Ojiva",v:"Convencional o subunitaria"},{l:"Plataforma",v:"TEL 8×8"},{l:"Unidades",v:">300 estimadas"},{l:"Mejora vs Sh-3",v:"CEP 3× mejor"}],
+pros:["Alta disponibilidad numérica (>300 unidades)","CEP ~800 m: 3× mejor que Shahab-3","Puede equiparse con múltiples tipos de ojivas","Bajo coste: accesible para uso masivo en saturación"],
+cons:["Combustible líquido: ~1 hora de preparación","800 m CEP insuficiente para blancos duros puntuales","Bien conocido por todos los servicios de inteligencia","TEL grande y visible para satélites de reconocimiento"],
+geo:"<p>El Ghadr-110 es el misil que convirtió la amenaza iraní contra Israel de teórica a práctica. Cuando en 2015 aparecieron imágenes de un Ghadr-110 en desfile con 'Muerte a Israel' escrito en hebreo, el message fue recibido precisamente como se pretendía: no como fanfarronería sino como demostración de que Irán tenía misiles en cantidad suficiente para exhibirlos con inscripciones de propaganda.</p><p>Los impactos confirmados en las bases aéreas israelíes de Nevatim y Tel Nof en octubre de 2024 fueron el momento más significativo del programa desde el Shahab-3: demostraron que incluso un sistema relativamente antiguo como el Ghadr puede superar el sistema de defensa en capas más sofisticado del mundo cuando se lanza en número suficiente para saturarlo.</p>"},
+
+emad:{name:"EMAD",arabic:"عماد — «Columna / Pilar»",type:"MRBM · 1er guiado terminal activo · MaRV",color:"var(--red)",desc:"El Emad fue el primer misil iraní con maniobra activa en la fase terminal. Sus aletas de control permiten guiar la ojiva hacia el blanco con una precisión 5 veces superior al Shahab-3, haciéndolo mucho más difícil de interceptar durante la fase de descenso final.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Emad_missile_2015.jpg/640px-Emad_missile_2015.jpg",caption:"Misil Emad · Presentación oficial 2015"},specs:[{v:"1.700 km",k:"Alcance"},{v:"750 kg",k:"Carga útil"},{v:"Líquido",k:"Propulsión"},{v:"~500 m",k:"CEP aprox."},{v:"15.5 m",k:"Longitud"},{v:"2015",k:"1er ensayo"}],range:{val:"1.700 km",pct:57,comps:[{n:"Shahab-3",km:1300,pct:76},{n:"Ghadr-110",km:1950,pct:87},{n:"Khorramshahr",km:2000,pct:85}]},
+history:[{year:"2015",tag:"prueba",title:"Primer ensayo — condena de EE.UU. y UE",desc:"Ensayo en octubre de 2015. EE.UU. y la UE lo condenan como violación de la Resolución 1929 del CSNU sobre el programa balístico iraní."},{year:"2016",tag:"logro",title:"Segunda prueba exitosa — salto cualitativo en precisión",desc:"El IRGC confirma el sistema con un CEP de ~500 m. La maniobra terminal fue calificada por analistas como el avance iraní más significativo en guiado de misiles balísticos."},{year:"2024",tag:"uso",title:"Operación 'Promesa Verdadera II' — impactos en Nevatim",desc:"Empleado junto a otros balísticos en el ataque del 1 de octubre de 2024. Varios impactaron en la base aérea de Nevatim, causando daños en pistas e infraestructuras."}],
+tech:[{l:"Guiado",v:"INS + guiado terminal activo"},{l:"Aletas",v:"4 aletas móviles en ojiva"},{l:"Propulsante",v:"Combustible líquido"},{l:"CEP",v:"~500 m (5× mejor que Shahab-3)"},{l:"Plataforma",v:"TEL móvil"},{l:"Origen",v:"Evolución Shahab-3/Ghadr"}],
+pros:["Primera maniobra terminal activa en misiles iraníes","CEP ~500 m: 5× más preciso que el Shahab-3","Maniobra terminal dificulta la intercepción","Probado en combate con impactos documentados"],
+cons:["Combustible líquido: ~1 hora de preparación","Arrow-3 israelí puede interceptarlo en exoatmósfera","Maniobra terminal ya conocida por Patriot moderno","Firma térmica durante preparación detectable por satélite"],
+geo:"<p>El Emad fue el primer signo claro de que Irán había decidido priorizar la calidad sobre la cantidad: en vez de seguir produciendo centenares de Shahab-3 de baja precisión, invirtió en sistemas que pudieran superar las defensas antimisiles. Esta decisión estratégica fue posiblemente impulsada por los datos recopilados durante las múltiples intercepciones de misiles que los sistemas Patriot realizaron contra misiles balísticos durante la guerra de Iraq.</p><p>El Emad también marcó el inicio de una competición tecnológica acelerada entre el programa de misiles iraní y los sistemas de defensa antimisiles israelíes (Arrow) y estadounidenses (THAAD, Patriot PAC-3), que continúa hasta hoy con el Fattah-1 hipersónico."},
+
+sejjil:{name:"SEJJIL-2",arabic:"سجیل — «Arcilla cocida» (Corán 105:4)",type:"MRBM · Sólido 2 etapas · <5 min preparación",color:"var(--red)",desc:"El Sejjil-2 es el mayor logro técnico autóctono iraní: el primer MRBM de combustible sólido de dos etapas desarrollado completamente en el país. Su ventaja estratégica es poder almacenarse listo y lanzarse en menos de 5 minutos, haciendo prácticamente imposible un ataque preventivo eficaz.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Sejil-2.jpg/640px-Sejil-2.jpg",caption:"Misil Sejjil-2 · Fuerzas Armadas Iraníes · 2009"},specs:[{v:"2.500 km",k:"Alcance"},{v:"750 kg",k:"Carga útil"},{v:"Sólido",k:"Propulsión"},{v:"2 etapas",k:"Configuración"},{v:"18 m",k:"Longitud"},{v:"<5 min",k:"Preparación"}],range:{val:"2.500 km",pct:83,comps:[{n:"Khorramshahr",km:2000,pct:80},{n:"Kheibar",km:2000,pct:80},{n:"Soumar",km:2500,pct:100}]},
+history:[{year:"2008",tag:"prueba",title:"Primer ensayo de dos etapas — hito técnico",desc:"Noviembre 2008: primer ensayo exitoso del primer MRBM de combustible sólido completamente doméstico de Irán. Un hito que cambió el equilibrio estratégico: ya no era necesario preparar el combustible líquido durante horas antes del lanzamiento."},{year:"2009",tag:"logro",title:"Segunda prueba con alcance de 2.000 km confirmado",desc:"Segunda prueba declarada exitosa. Alcance confirmado de ~2.000 km, posteriormente extendido a 2.500 km."},{year:"2011",tag:"prueba",title:"Pausa en ensayos públicos — mejoras internas",desc:"Irán deja de publicar pruebas durante años. El IISS cree que se realizaron mejoras estructurales y en el guiado durante ese período."},{year:"2023",tag:"logro",title:"Estado operativo pleno confirmado por IRGC",desc:"Fuentes del IRGC confirmaron que el Sejjil-2 está en plena producción y operativo, con tiempo de lanzamiento inferior a 5 minutos."}],
+tech:[{l:"Guiado",v:"INS + guiado terminal"},{l:"Propulsante",v:"Sólido (2 etapas)"},{l:"Almacenamiento",v:"Prealmacenado años sin degradación"},{l:"Preparación",v:"<5 minutos desde alerta"},{l:"Origen",v:"Desarrollo 100% iraní"},{l:"Plataforma",v:"TEL móvil o silos subterráneos"}],
+pros:["<5 min de preparación: invulnerable a ataque preventivo","No requiere cisternas de combustible visibles","Puede almacenarse en silos subterráneos","100% iraní: inmune a sanciones de componentes"],
+cons:["Menor carga útil que los de combustible líquido","CEP aún inferior a misiles occidentales comparables","Más costoso que los de combustible líquido","2.500 km: no cubre Europa occidental"],
+geo:"<p>La transición del Sejjil-2 al combustible sólido es estratégicamente más importante de lo que aparece. Los misiles de combustible líquido tienen una vulnerabilidad crítica: se pueden fotografiar desde satélite cuando los camiones cisterna de combustible se acercan al lanzador durante la preparación, dando una ventana de tiempo al adversario para un ataque preventivo. El Sejjil-2 elimina esta ventana por completo.</p><p>En este contexto, el Sejjil-2 fue directamente impulsado por el riesgo de un ataque preventivo israelí o estadounidense contra el programa nuclear iraní: Irán necesitaba misiles que pudieran sobrevivir al primer golpe adversario y lanzarse en represalia en cuestión de minutos, no de horas."},
+
+khorramshahr:{name:"KHORRAMSHAHR",arabic:"خرمشهر — Ciudad mártir de la guerra Irán-Iraq",type:"MRBM · MIRV · Generaciones 1-3 · Líquido",color:"var(--red)",desc:"El Khorramshahr fue el primer MRBM iraní con capacidad MIRV (múltiples vehículos de reentrada independientes), permitiendo atacar varios objetivos simultáneamente con un solo lanzamiento. Su versión más avanzada es el Kheibar (Khorramshahr-4), con entrada propia en este arsenal.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Khorramshahr_ballistic_missile_%281%29.jpg/640px-Khorramshahr_ballistic_missile_%281%29.jpg",caption:"Khorramshahr en desfile militar · Teherán · 2017"},specs:[{v:"2.000 km",k:"Alcance"},{v:"1.800 kg",k:"Carga útil máx."},{v:"Líquido",k:"Propulsión"},{v:"MIRV",k:"Hasta 4 ojivas"},{v:"13 m",k:"Longitud"},{v:"2017",k:"1er ensayo"}],range:{val:"2.000 km",pct:67,comps:[{n:"Emad",km:1700,pct:85},{n:"Sejjil-2",km:2500,pct:80},{n:"Shahab-3",km:1300,pct:65}]},
+history:[{year:"2017",tag:"fallo",title:"Primer ensayo — fallo a 950 km",desc:"El primer ensayo mostró un fallo en la fase final: el misil explotó tras recorrer ~950 km. EE.UU. confirmó el lanzamiento fallido."},{year:"2017",tag:"logro",title:"Segundo ensayo exitoso — producción ordenada",desc:"Semanas después, el segundo ensayo fue exitoso. El presidente Rouhani ordenó inmediatamente iniciar la producción en serie."},{year:"2019",tag:"logro",title:"Khorramshahr-2 — alerta de alcance real >3.000 km",desc:"Francia, RU y Alemania alertaron ante la ONU que el Khorramshahr-2 podría alcanzar más de 3.000 km con ojiva ligera, clasificándolo como IRBM de facto."},{year:"2022",tag:"logro",title:"Ver entrada KHEIBAR para la versión más avanzada",desc:"El Khorramshahr-4, presentado en 2023, tiene entrada propia como KHEIBAR con ojiva de 1.500 kg y MaRV mejorado."}],
+tech:[{l:"Guiado",v:"INS + GPS + MaRV terminal"},{l:"Ojivas",v:"MIRV (hasta 4 independientes)"},{l:"Propulsante",v:"Líquido bifásico"},{l:"Etapas",v:"Dos etapas"},{l:"Origen",v:"Hwasong-10 norcoreano mod."},{l:"Preparación",v:"45-90 minutos"}],
+pros:["MIRV: múltiples objetivos simultáneos","Carga útil hasta 1.800 kg","Alcanza toda la región incluyendo Europa del Este","Base tecnológica del Kheibar"],
+cons:["Líquido = 45-90 min preparación (muy vulnerable)","TEL enorme: visible para satélites","Superado en casi todo por el Kheibar (Khorrr-4)","Primer ensayo fue un fallo notable"],
+geo:"<p>El MIRV del Khorramshahr tiene implicaciones que van más allá de la precisión: un solo misil lanzado puede obligar a los sistemas de defensa antimisiles a destinar múltiples interceptores costosos para neutralizar lo que aparece como un solo blanco de lanzamiento. Esta es la lógica de saturación que impulsa todo el programa balístico iraní: no se trata de tener misiles más precisos que los adversarios, sino de tener suficientes cabezas de misil para agotar el número finito de interceptores del adversario.</p><p>El alcance real potencial de 3.000+ km señalado por las potencias europeas ante la ONU convirtió al Khorramshahr en el primer sistema iraní con alcance teórico sobre Europa occidental, cruzando una línea política que hasta entonces había respetado Irán (al menos oficialmente)."},
+
+kheibar:{name:"KHEIBAR (Khorramshahr-4)",arabic:"خیبر — Batalla islámica del año 629 · Victoria de Mahoma",type:"MRBM · 4ª Generación · El más potente del arsenal iraní",color:"var(--red)",desc:"El Kheibar es el misil más avanzado y potente del arsenal iraní actualmente. Destaca por la ojiva más pesada de todo el programa (1.500-1.800 kg), un motor hipergólico que reduce la preparación a menos de 15 minutos, y un MaRV que desactiva el guiado al reentrar en la atmósfera para frustrar el jamming electrónico. Ha sido usado en combate en 2024 y 2026.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Khorramshahr-4_missile_%28Kheibar%29_2023.jpg/640px-Khorramshahr-4_missile_%28Kheibar%29_2023.jpg",caption:"Kheibar (Khorramshahr-4) · Presentación oficial · mayo 2023"},specs:[{v:"2.000 km",k:"Alcance"},{v:"1.500 kg",k:"Ojiva (máx.)"},{v:"Mach 16",k:"Vel. exoatm."},{v:"<15 min",k:"Preparación"},{v:"~30 m",k:"CEP estimado"},{v:"2023",k:"Presentado"}],range:{val:"2.000 km",pct:67,comps:[{n:"Khorramshahr-1",km:2000,pct:100},{n:"Sejjil-2",km:2500,pct:80},{n:"ATACMS",km:300,pct:15}]},
+history:[{year:"2023",tag:"logro",title:"Presentación oficial — 41º aniversario de Khorramshahr",desc:"El Ministro de Defensa Gharaei Ashtiani presenta el Kheibar el 25 de mayo de 2023. Se realiza un ensayo de lanzamiento en directo."},{year:"2024",tag:"uso",title:"Operación 'Promesa Verdadera II' — impactos en Israel (1 oct.)",desc:"El IRGC confirma el uso del Kheibar. Su enorme ojiva causó daños estructurales significativos en la base aérea de Nevatim."},{year:"2026",tag:"uso",title:"Ataque contra Ben Gurion — Operación TP-4 (5 mar. 2026)",desc:"El IRGC confirmó el lanzamiento del Khorramshahr-4 contra el aeropuerto Ben Gurion y la base aérea israelí 27, dentro de la oleada 19 de la Operación Promesa Verdadera 4."},{year:"2026",tag:"uso",title:"Primer ataque contra bases de EE.UU. en el Golfo",desc:"Irán utilizó el Kheibar contra Al Udeid (Qatar) y bases en Bahréin, marcando la primera vez que misiles iraníes atacaban directamente infraestructura militar de EE.UU. fuera de Iraq."}],
+tech:[{l:"Motor",v:"4D10 — hipergólico autognitable"},{l:"Preparación",v:"<15 min (sin inyección de combustible)"},{l:"Velocidad",v:"Mach 16 exoatm. / Mach 8 entrada"},{l:"Guiado",v:"INS + mid-course activo + MaRV"},{l:"Anti-ECM",v:"Desactiva guiado en reentrada"},{l:"Origen",v:"Hwasong-10 + motor Arvand iraní"}],
+pros:["Ojiva más pesada del arsenal: 1.500-1.800 kg","MaRV desactiva guiado en reentrada: resistente a jamming","<15 min gracias a combustible hipergólico autognitable","Mach 16 exoatm.: ventana de intercepción brevísima","Probado en combate con impactos (oct. 2024, mar. 2026)"],
+cons:["Hipergólico: tóxico y de manejo complejo","2.000 km: no alcanza Europa occidental","TEL enorme (>30 t): visible para satélites","Arrow-3 puede interceptarlo en exoatmósfera"],
+geo:"<p>El Kheibar representa el punto culminante de la evolución iraní desde el Scud-B de 1984: en 40 años, Irán pasó de copiar misiles soviéticos de los años 60 a desarrollar un MRBM con ojiva de 1.500 kg, velocidad de Mach 16 y sistema anti-jamming propio. Es uno de los pocos misiles convencionales del mundo con una ojiva pesada suficiente para el umbral de capacidad nuclear, aunque Irán niega cualquier intención en ese sentido.</p><p>Los ataques de 2026 contra Al Udeid (Qatar, la mayor base aérea de EE.UU. en Oriente Medio) y las bases en Bahréin representaron un cruce de línea histórico: por primera vez, misiles iraníes atacaban directamente instalaciones centrales de EE.UU. (no solo bases con presencia periférica como en Iraq), elevando drásticamente el umbral de escalada del conflicto.</p>"},
+
+fattah:{name:"FATTAH-1",arabic:"فتاح — «El que abre camino»",type:"Hipersónico HGV · Mach 13-15 · Nueva generación",color:"var(--purple)",desc:"El Fattah-1 es el primer misil hipersónico iraní. A más de Mach 13-15, puede maniobrar en toda su trayectoria —incluyendo la fase media—, combinando velocidad y maniobrabilidad de forma que los sistemas actuales como el Patriot o el Arrow-3 no están diseñados para interceptar.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Fattah_missile_Iran_2023.jpg/640px-Fattah_missile_Iran_2023.jpg",caption:"Fattah-1 · Presentación ante el líder Khamenei · junio 2023"},specs:[{v:"1.400 km",k:"Alcance"},{v:"Mach 13-15",k:"Velocidad"},{v:"Sólido",k:"Propulsión"},{v:"HGV",k:"Tipo ojiva"},{v:"~13.5 m",k:"Long. est."},{v:"2023",k:"Presentado"}],range:{val:"1.400 km",pct:47,comps:[{n:"Kinzhal (Rusia)",km:2000,pct:70},{n:"DF-17 (China)",km:2500,pct:56},{n:"Ghadr-110",km:1950,pct:72}]},
+history:[{year:"2023",tag:"logro",title:"Presentación ante Khamenei — 'salto cuántico'",desc:"El líder supremo Khamenei presidió la presentación en junio de 2023, calificándolo personalmente como un 'salto cuántico' en las capacidades disuasorias iraníes."},{year:"2023",tag:"prueba",title:"Ensayo reclamado — sin verificación independiente",desc:"Irán afirmó realizar un ensayo exitoso. Analistas occidentales señalaron que no hay imágenes independientes completas que lo confirmen."},{year:"2024",tag:"uso",title:"Presunto uso en 'Promesa Verdadera II'",desc:"Irán afirmó haber lanzado Fattah-1 en octubre 2024. Israel y EE.UU. no confirmaron intercepción explícita de este sistema, lo que sugiere posibles impactos o vuelos no detectados."},{year:"2024",tag:"logro",title:"Presentación del Fattah-2 — mayor alcance",desc:"Apenas un año después, Irán presentó el Fattah-2 con mayor alcance estimado y HGV de segunda generación mejorado."}],
+tech:[{l:"Tipo",v:"MRBM + HGV (Hypersonic Glide Vehicle)"},{l:"Velocidad",v:">Mach 13-15 (~18.000 km/h)"},{l:"Maniobra",v:"Fase media Y terminal"},{l:"Propulsante",v:"Sólido (1ª etapa) + HGV"},{l:"Guiado",v:"INS + guiado terminal activo"},{l:"Diseñado para",v:"Evadir específicamente Patriot y Arrow"}],
+pros:["Velocidad hipersónica + maniobra = muy difícil de interceptar","Trayectoria no predecible: radares convencionales fallan","Acelera la brecha tecnológica con sistemas defensivos regionales","Su existencia obliga costoso redesarrollo de defensas rivales"],
+cons:["1.400 km: inferior a los MRBM convencionales iraníes","Producción en serie no verificada independientemente","Requiere materiales avanzados sujetos a sanciones","Penetración real en combate verificado aún no demostrada"],
+geo:"<p>El Fattah-1 señala el inicio de una nueva fase de la carrera armamentística en Oriente Medio. Durante décadas, el equilibrio entre misiles ofensivos y defensivos en la región giró en torno a los misiles balísticos convencionales y los sistemas Patriot/Arrow. El Fattah-1 cambia fundamentalmente esa ecuación: los sistemas de defensa antimisiles actualmente desplegados en el Golfo y en Israel no están diseñados para interceptar vectores hipersónicos maniobrables.</p><p>Estados Unidos tiene sistemas hipersónicos en desarrollo (AGM-183A, Dark Eagle), pero ninguno de los sistemas defensivos actualmente desplegados en la región tiene capacidad probada contra amenazas hipersónicas maniobrables. Esto crea un vacío defensivo temporal que Irán está explotando estratégicamente."},
+
+yaali:{name:"YA ALI",arabic:"یا علی — «Oh Alí» (invocación shií)",type:"Crucero LACM · CEP ~5 m · Vuelo rasante",color:"var(--blue)",desc:"El Ya Ali es el misil de crucero de precisión más avanzado del arsenal iraní, con un CEP de ~5 metros gracias al guiado de imagen infrarroja terminal. Navega a 30-50 metros sobre el terreno para evadir radares y puede lanzarse desde aeronaves o desde lanzadores terrestres.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Ya_Ali_cruise_missile.jpg/640px-Ya_Ali_cruise_missile.jpg",caption:"Misil de crucero Ya Ali · Fuerza Aérea Iraní"},specs:[{v:"700 km",k:"Alcance"},{v:"~45 kg",k:"Carga útil"},{v:"M ~0.8",k:"Velocidad"},{v:"GPS+IIR",k:"Guiado"},{v:"4.2 m",k:"Longitud"},{v:"2014",k:"1er ensayo"}],range:{val:"700 km",pct:23,comps:[{n:"Noor (antibuque)",km:170,pct:24},{n:"JASSM-ER",km:925,pct:76},{n:"Soumar",km:2500,pct:28}]},
+history:[{year:"2014",tag:"prueba",title:"Presentación — lanzamiento desde F-4 Phantom",desc:"Presentado como primer LACM iraní con guiado IIR terminal. Exhibido lanzado desde un F-4 Phantom iraní modernizado."},{year:"2015",tag:"logro",title:"CEP de ~5 m confirmado en ensayos controlados",desc:"Ensayos contra blancos terrestres fijos demostraron impactos dentro de 5 metros."},{year:"2016",tag:"logro",title:"Versión de lanzamiento terrestre",desc:"Presentada la variante de TEL terrestre, aumentando opciones de empleo independientemente de la fuerza aérea."},{year:"2024",tag:"uso",title:"Incluido en 'Promesa Verdadera I' — interceptado en mayoría",desc:"LACM tipo Ya Ali formaron parte del ataque del 13-14 de abril de 2024. La coalición multinacional interceptó la gran mayoría antes de entrar en espacio aéreo israelí."}],
+tech:[{l:"Guiado",v:"GPS + INS + IIR terminal"},{l:"Altitud vuelo",v:"30-50 m nap-of-earth"},{l:"Plataformas",v:"F-4, Su-24, TEL terrestre"},{l:"Propulsión",v:"Motor turbofán pequeño"},{l:"CEP",v:"~3-5 metros"},{l:"Perfil radar",v:"Muy reducido"}],
+pros:["CEP ~5 m: puede atacar objetivos puntuales duros","Vuelo a 30-50 m: indetectable por radares de largo alcance","Guiado IIR: no depende solo del GPS (no jammeable)","Versatilidad: aéreo y terrestre"],
+cons:["Subsónico: tiempo de vuelo largo = posibilidades de intercepción","700 km no cubre Israel desde Irán directamente","La fuerza aérea iraní opera aeronaves muy anticuadas (F-4 de los años 60)","Firma acústica del motor detectable en condiciones de silencio"],
+geo:"<p>El Ya Ali ilustra la paradoja del poder aéreo iraní: Irán invirtió en misiles de crucero de alta precisión precisamente porque no puede actualizar su fuerza aérea (sancionada desde 1979). Los F-4 Phantom que lanzan el Ya Ali son aviones de los años 1970; lo que los hace relevantes en 2024 no es el avión sino el misil que transporta, capaz de atacar con precisión quirúrgica cualquier objetivo en un radio de 700 km.</p><p>Esta estrategia de 'compensación asimétrica' —usar misiles modernos desde plataformas anticuadas— es característica de todo el pensamiento estratégico iraní post-1979 y hace que las sanciones a la fuerza aérea sean menos eficaces de lo que se pensaba inicialmente.</p>"},
+
+soumar:{name:"SOUMAR",arabic:"سومار — Ciudad iraní",type:"Crucero LACM · 2.500 km · Mayor alcance de crucero iraní",color:"var(--blue)",desc:"El Soumar es el misil de crucero de mayor alcance del arsenal iraní, con 2.500 km capaces de alcanzar Europa central. Derivado del misil nuclear soviético Kh-55 mediante 6 ejemplares adquiridos ilegalmente de Ucrania en 2001, usa guiado TERCOM (contorno del terreno) para una precisión elevada independiente del GPS.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Soumar_missile_Iran.jpg/640px-Soumar_missile_Iran.jpg",caption:"Misil de crucero Soumar · Exposición militar Teherán · 2015"},specs:[{v:"2.500 km",k:"Alcance"},{v:"~400 kg",k:"Carga útil"},{v:"M ~0.77",k:"Velocidad"},{v:"TERCOM",k:"Guiado terreno"},{v:"~6 m",k:"Longitud"},{v:"2015",k:"Presentado"}],range:{val:"2.500 km",pct:83,comps:[{n:"Ya Ali",km:700,pct:28},{n:"Kh-55 (origen)",km:2500,pct:100},{n:"Tomahawk",km:1850,pct:74}]},
+history:[{year:"2001",tag:"logro",title:"Adquisición ilegal de 6 Kh-55 de Ucrania",desc:"Ucrania vendió ilegalmente 6 misiles Kh-55 (sin cabezas nucleares) a Irán. El escándalo fue descubierto en 2005. Fueron el punto de partida del programa Soumar."},{year:"2015",tag:"logro",title:"Presentación del Soumar",desc:"Irán presenta el Soumar como desarrollo doméstico, aunque su similitud con el Kh-55 es evidente. Primer LACM iraní con alcance de 2.500 km."},{year:"2019",tag:"uso",title:"Presunto uso en ataque contra Aramco saudí",desc:"EE.UU. y Arabia Saudí señalaron a Irán del ataque del 14 sep. 2019 contra Abqaiq y Khurais, paralizando el 5-7% de la producción mundial de petróleo."},{year:"2023",tag:"logro",title:"Variante Paveh / Quds-1 confirmada para proxies",desc:"Iran confirmó la variante Paveh, usada por los Houthis como 'Quds-1' en ataques contra Arabia Saudí e Israel."}],
+tech:[{l:"Origen",v:"Kh-55 soviético (reverse engineering)"},{l:"Guiado",v:"INS + TERCOM (terreno)"},{l:"Altitud vuelo",v:"~50-100 m nap-of-earth"},{l:"Motor",v:"Turbofán TRDD-50 (copia)"},{l:"Fuente",v:"6 Kh-55 adquiridos ileg. de Ucrania"},{l:"Variante proxy",v:"Paveh / Quds-1 (Houthis)"}],
+pros:["2.500 km: cubre Europa central","TERCOM: precisión alta independiente del GPS","Vuelo rasante: indetectable por radares de largo alcance","Evade defensas diseñadas para misiles balísticos"],
+cons:["Subsónico: vuelo de horas, dando tiempo al defensor","Motor turbofán genera firma acústica y térmica","Su origen en el Kh-55 es conocido por todos los sistemas occidentales","Carga útil ~400 kg relativamente limitada"],
+geo:"<p>La adquisición ilegal del Kh-55 ucraniano fue uno de los episodios más reveladores del programa de armas iraní: en 2001, mientras negociaba con Occidente sobre su programa nuclear, Irán aprovechó el caos post-soviético en Ucrania para adquirir el misil nuclear estratégico más avanzado de la URSS, diseñado para transportar cabezas termonucleares de hasta 200 kilotones. Iran obtuvo el misil desnuclearizado, pero el sistema de guiado y la tecnología aerodinámica eran iguales.</p><p>El alcance del Soumar (2.500 km) hace que sea el primer misil convencional iraní capaz de alcanzar capitales europeas: Atenas, Roma, Budapest, Varsovia y Berlín están dentro de su radio de acción desde Irán occidental. Esto convirtió a Irán en una amenaza directa para Europa no solo en términos nucleares sino convencionales, transformando las negociaciones diplomáticas europeas con Teherán."},
+
+shahed136:{name:"SHAHED-136",arabic:"شاهد ۱۳۶ — «Testigo» · ⚠ NO es un misil",type:"Dron Loitering (UAV kamikaze) · ~$20.000/unidad",color:"var(--teal)",desc:"El Shahed-136 NO es un misil de crucero: es una munición merodeadora (loitering munition), un dron de ataque suicida que vuela con motor de pistón. Su impacto estratégico no viene de su tecnología sino de su coste radicalmente bajo (~$20.000), que permite lanzar enjambres de cientos de unidades para saturar cualquier sistema de defensa.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Shahed_136_Iran_drone.jpg/640px-Shahed_136_Iran_drone.jpg",caption:"Shahed-136 capturado en Ucrania · 2022 · Wikimedia"},specs:[{v:"2.500 km",k:"Alcance"},{v:"~50 kg",k:"Carga útil"},{v:"~180 km/h",k:"Velocidad"},{v:"~$20.000",k:"Coste/unidad"},{v:"2.5 m",k:"Envergadura"},{v:"2021",k:"1er uso doc."}],range:{val:"2.500 km",pct:83,comps:[{n:"Lancet (Rusia)",km:40,pct:2},{n:"Harop (Israel)",km:1000,pct:40},{n:"Ya Ali",km:700,pct:28}]},
+history:[{year:"2021",tag:"uso",title:"1os ataques documentados — Yemen (Houthis)",desc:"Los hutíes usan el Shahed-136 (como 'Qasef-2K') contra infraestructura saudí, confirmando su efectividad en ataques de saturación masiva a coste mínimo."},{year:"2022",tag:"uso",title:"Masivo en Ucrania — renombrado 'Geran-2' por Rusia",desc:"Rusia comenzó a usar el Shahed-136 en septiembre 2022 contra Ucrania. Miles de unidades atacaron redes eléctricas causando apagones masivos en invierno."},{year:"2022",tag:"fallo",title:"Alta tasa de intercepción en Ucrania: 70-80%",desc:"Ucrania desarrolló tácticas de intercepción con armas baratas (cañones ZSU-23, ametralladoras), logrando derribar 70-80% en períodos punta."},{year:"2024",tag:"uso",title:"'Promesa Verdadera I' — 170 drones hacia Israel",desc:"Irán lanzó >170 Shahed hacia Israel. La coalición multinacional (Israel, EE.UU., RU, Jordania) interceptó la gran mayoría."},{year:"2024",tag:"logro",title:"Producción local en Rusia bajo licencia iraní",desc:"Rusia inició fabricación doméstica del Shahed-136, multiplicando su disponibilidad para el frente ucraniano."},{year:"2025",tag:"uso",title:"Empleado masivamente en guerra Irán-Israel (jun. 2025)",desc:"Miles de Shahed en oleadas coordinadas con balísticos buscaron saturar Iron Dome, David's Sling y Arrow-3 israelíes."}],
+tech:[{l:"TIPO REAL",v:"Dron loitering — NO misil crucero"},{l:"Forma",v:"Ala delta de fibra de carbono"},{l:"Motor",v:"Pistón MD-550 (motor de moto)"},{l:"Guiado",v:"GPS + INS (sin maniobra evasiva)"},{l:"Táctica",v:"Enjambres 20-200+ unidades"},{l:"Detectabilidad",v:"Muy baja (sección radar pequeña)"}],
+pros:["$20.000: enjambres de 200 uds. por ~4M$","Cada interceptación enemiga cuesta 10-100× más","2.500 km a ese precio: sin precedente armamentístico","Muy difícil de detectar de noche a baja velocidad"],
+cons:["180 km/h: tiempo de alerta de horas para el defensor","GPS jammeable: Ucrania lo explota con 'burbujas GPS'","Sin maniobra evasiva: trayectoria lineal predecible","50 kg: requiere enjambres masivos para daños significativos"],
+geo:"<p>El Shahed-136 ha transformado la guerra moderna más profundamente que cualquier otro sistema iraní. La razón no es tecnológica —es económica: a $20.000 por unidad, Irán puede producir y transferir miles de drones que cuestan 100 veces menos que los interceptores necesarios para destruirlos. Esta asimetría de costes es deliberadamente insostenible para los defensores.</p><p>En Ucrania, el coste de cada Patriot PAC-2 usado para interceptar un Shahed es de aproximadamente $1-2 millones frente a los $20.000 del dron. Si se lanza en enjambre de 100 unidades, el defensor gasta $100-200 millones para interceptar un ataque que costó $2 millones. Esta lógica explica por qué el Shahed-136 ha sido el sistema más transformador del conflicto ucraniano y posiblemente de la guerra moderna desde el misil antitanque."},
+
+noor:{name:"NOOR",arabic:"نور — «Luz»",type:"Antibuque AShM · Sea-skimming 5-7 m · C-802 mejorado",color:"var(--green)",desc:"El Noor, versión iraní mejorada del misil chino C-802, es el eje central de la defensa costera iraní en el Golfo Pérsico y el Estrecho de Ormuz. Vuela a 5-7 metros sobre el mar para evadir radares navales y ha demostrado su efectividad en combate real en 2006.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Noor_missile_Iran.jpg/640px-Noor_missile_Iran.jpg",caption:"Misil antibuque Noor en lanzador costero · Fuerzas Armadas Iraníes"},specs:[{v:"170 km",k:"Alcance"},{v:"165 kg",k:"Carga útil"},{v:"M ~0.9",k:"Velocidad"},{v:"5-7 m",k:"Altura vuelo"},{v:"6.3 m",k:"Longitud"},{v:"2000s",k:"Operativo"}],range:{val:"170 km",pct:32,comps:[{n:"Exocet AM39",km:70,pct:41},{n:"Harpoon",km:130,pct:76},{n:"BrahMos",km:300,pct:57}]},
+history:[{year:"2006",tag:"uso",title:"Impacto contra fragata israelí INS Hanit",desc:"14 jul. 2006: Hezbolá (con armamento iraní) lanzó dos C-802/Noor contra la fragata INS Hanit. Uno impactó, matando a 4 marineros y dañando gravemente el buque. Primera demostración real de efectividad."},{year:"2011",tag:"logro",title:"Noor mejorado con alcance de 200+ km",desc:"Irán presentó una versión con mayor alcance y guiado mejorado."},{year:"2020",tag:"logro",title:"Integración completa en defensa del Golfo",desc:"El Noor cubre todo el Golfo Pérsico y el Estrecho de Ormuz desde plataformas costeras, navales y de helicóptero."},{year:"2023",tag:"uso",title:"Ejercicios de saturación en el Estrecho",desc:"Durante tensiones con la Marina de EE.UU., Irán realizó ejercicios de lanzamiento simultáneo desde lanchas rápidas IRGC, demostrando capacidad de saturación en aguas confinadas."}],
+tech:[{l:"Guiado terminal",v:"Radar activo homing"},{l:"Altitud vuelo",v:"5-7 metros sobre el mar"},{l:"Origen",v:"C-802 chino (mejorado)"},{l:"Plataformas",v:"Costa, buques, helicópteros"},{l:"Ojiva",v:"Semi-armour piercing 165 kg"},{l:"Motor",v:"Turborreactor + booster sólido"}],
+pros:["Sea-skimming a 5-7 m: indetectable por radares navales hasta tarde","Alta probabilidad de impacto en buques de superficie","Probado en combate (INS Hanit, 2006)","Saturación múltiple simultánea"],
+cons:["170 km: suficiente para el Golfo pero limitado en mar abierto","Subsónico: tiempo de vuelo de ~11 min","Guiado activo perturbable por jammers navales modernos","Necesita designación de objetivo externa para alcance máximo"],
+geo:"<p>El Estrecho de Ormuz —por donde transita el 20% del petróleo mundial— es el principal escenario para el Noor. Irán ha declarado repetidamente que puede cerrar el Estrecho en respuesta a sanciones o ataques: con decenas de lanchas rápidas del IRGC dotadas de Noor, baterías costeras y helicópteros, la densidad de misiles antibuque en esas aguas confinadas (apenas 55 km de ancho en el punto más estrecho) hace que cualquier intento naval de mantener abierto el Estrecho bajo fuego iraní sea extremadamente costoso.</p><p>La amenaza del Noor sobre el Estrecho es lo que ha mantenido los precios del petróleo sensibles a las tensiones con Irán durante décadas, independientemente de la situación real en el campo de batalla."},
+
+khalij:{name:"KHALIJ FARS",arabic:"خلیج فارس — «Golfo Pérsico»",type:"ASBM · Balístico antibuque · Único en Oriente Medio",color:"var(--green)",desc:"El Khalij Fars es una de las armas más singulares del arsenal iraní: un misil balístico diseñado para hundir buques de superficie. Cae sobre el objetivo a gran velocidad desde trayectoria balística a más de Mach 3, siendo muy difícil de interceptar con los sistemas defensivos navales actuales.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Khalij_Fars_ASBM_Iran.jpg/640px-Khalij_Fars_ASBM_Iran.jpg",caption:"Khalij Fars en lanzador · Fuerzas Armadas Iraníes · 2011"},specs:[{v:"300 km",k:"Alcance"},{v:"650 kg",k:"Carga útil"},{v:"~M 3+",k:"Vel. terminal"},{v:"ASBM",k:"Único en clase"},{v:"8.9 m",k:"Longitud"},{v:"2011",k:"1er ensayo"}],range:{val:"300 km",pct:10,comps:[{n:"Noor AShM",km:170,pct:57},{n:"DF-21D (China)",km:1500,pct:20},{n:"Harpoon",km:130,pct:43}]},
+history:[{year:"2011",tag:"prueba",title:"Primer ensayo — alarma en Marina de EE.UU.",desc:"El ensayo de feb. 2011 fue el primero en que Irán demostró un balístico capaz de amenazar portaviones en el Golfo. La Marina de EE.UU. reconoció el avance como una amenaza real."},{year:"2011",tag:"logro",title:"Ensayo contra buque objetivo en movimiento",desc:"Irán realizó un ensayo contra un buque objetivo en movimiento, afirmando impacto directo."},{year:"2014",tag:"logro",title:"Variantes Hormuz-1 (radar) y Hormuz-2 (naval)",desc:"Presentación de variantes especializadas contra radares móviles y buques de guerra."},{year:"2020",tag:"uso",title:"'Gran Profeta-14' — contra maqueta de portaviones",desc:"Irán lanzó múltiples Khalij Fars contra una réplica a escala real de portaviones norteamericano en el Golfo. Mensaje directo a la Marina de EE.UU."}],
+tech:[{l:"Tipo",v:"ASBM (Anti-Ship Ballistic Missile)"},{l:"Guiado terminal",v:"EO/IIR (imagen óptica/infrarroja)"},{l:"Vel. terminal",v:">Mach 3 al impacto"},{l:"Maniobra terminal",v:"Aletas de control activas"},{l:"Origen",v:"Derivado del Fateh-110"},{l:"Amenaza",v:"Portaviones y buques en el Golfo"}],
+pros:["Vel. terminal >Mach 3: muy difícil de interceptar","Trayectoria balística inesperada para defensas navales","Alta carga explosiva (650 kg) para buques grandes","Muy disuasorio para operaciones navales en el Golfo"],
+cons:["300 km: solo opera dentro del Golfo Pérsico","Discriminar blancos móviles en mar es técnicamente complejo","Sistema Aegis Block III tiene capacidad teórica de intercepción","Precisión real contra blancos navales móviles no verificada en combate"],
+geo:"<p>El Khalij Fars es el intento iraní de replicar la estrategia china del DF-21D ('matar portaviones'): negar a la Marina de EE.UU. la capacidad de operar libremente en las aguas del Golfo Pérsico. La lógica es que si los portaviones americanos no pueden aproximarse al Golfo sin riesgo de ser hundidos, la capacidad de EE.UU. de proyectar fuerza aérea masiva contra Irán se reduce enormemente.</p><p>Si el Khalij Fars tiene la precisión que Irán afirma —algo no verificado independientemente—, representa una de las mayores amenazas para el poder naval de EE.UU. en la región, dado que los misiles balísticos antibuque son mucho más difíciles de interceptar que los misiles de crucero convencionales para los que están optimizados los sistemas Aegis actuales.</p>"},
+
+s200:{name:"S-200 ANGARA / VEGA",arabic:"С-200 Ангара · Código OTAN: SA-5 'Gammon'",type:"SAM Largo Alcance · Ruso · Operativo desde 1997",color:"var(--gold)",desc:"El S-200 es el sistema de defensa aérea de largo alcance más antiguo del arsenal iraní, obtenido de Rusia a mediados de los años 90. Con alcance de hasta 300 km y capaz de alcanzar altitudes de 35 km, fue diseñado en los años 60 para interceptar bombarderos estratégicos soviéticos. Su tecnología es obsoleta pero sigue siendo la capa exterior de la defensa aérea iraní.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/S-200_Angara_in_Iran.jpg/640px-S-200_Angara_in_Iran.jpg",caption:"Sistema S-200 iraní en posición de combate"},specs:[{v:"300 km",k:"Alcance máximo"},{v:"35 km",k:"Altitud máx."},{v:"M 4",k:"Vel. interceptor"},{v:"Radar fijo",k:"Guiado"},{v:"Año 1967",k:"Diseño original"},{v:"1997",k:"Irán: operativo"}],range:{val:"300 km",pct:55,comps:[{n:"S-300PMU-2",km:150,pct:50},{n:"Bavar-373",km:200,pct:67},{n:"Sayyad-3",km:120,pct:40}]},
+history:[{year:"1990s",tag:"logro",title:"Adquisición de Rusia — primer SAM de largo alcance",desc:"Irán adquiere el S-200 Angara de Rusia a mediados de los años 90, obteniendo por primera vez capacidad de defensa aérea de largo alcance real. Los sistemas fueron integrados alrededor de instalaciones críticas como Teherán e Isfahan."},{year:"1997",tag:"logro",title:"Declarado operativo por la Fuerza Aérea iraní",desc:"La Fuerza de Defensa Aérea Iraní (IRIADF) declara el S-200 Angara completamente operativo en 1997, convirtiéndolo en la principal defensa de largo alcance durante casi dos décadas."},{year:"2018",tag:"uso",title:"Activaciones reportadas ante vuelos israelíes sobre Siria",desc:"Unidades S-200 iraníes y sirias fueron activadas repetidamente durante operaciones aéreas israelíes sobre Siria, aunque con escasos éxitos de intercepción."},{year:"2024",tag:"fallo",title:"Desactivado/degradado en ataques israelíes",desc:"Los ataques israelíes de abril y octubre 2024 degradaron significativamente las baterías S-200 iraníes, especialmente sus radares de seguimiento 5N62V, que son críticos para el funcionamiento del sistema."},{year:"2026",tag:"uso",title:"Estado operativo incierto — en proceso de modernización",desc:"A principios de 2026, el estado real de los S-200 iraníes es incierto. Irán ha señalado que trabaja en integrar sus sistemas rusos con radares domésticos (Meraj-4) para compensar la pérdida de radares rusos."}],
+tech:[{l:"Misil",v:"5V28 (SA-5)"},{l:"Guiado",v:"Radar semi-activo (SARH)"},{l:"Radar búsqueda",v:"P-14 Tall King (Long Track)"},{l:"Radar tiro",v:"5N62V (Square Pair)"},{l:"Lanzador",v:"5P72 (fijo, no móvil)"},{l:"Diseño original",v:"Almaz OKB, Moscú, 1967"}],
+pros:["300 km de alcance: capa exterior de defensa más amplia del arsenal","Puede interceptar bombarderos estratégicos a 35 km de altitud","Gran alcance actúa como zona de exclusión aérea psicológica","Las antenas de largo alcance detectan amenazas mucho antes que sistemas menores"],
+cons:["Tecnología de 1967: los F-35 y B-2 son prácticamente invisibles para él","Lanzadores fijos: muy vulnerables a ataques preventivos","Radar Semi-Active: el avión objetivo puede maniobrar para romper el 'iluminado'","Completamente superado por S-300PMU-2 y Bavar-373"],
+geo:"<p>El S-200 iraní es un recordatorio de la dependencia histórica de Irán de tecnología militar soviética/rusa. Desde la Revolución Islámica de 1979, las sanciones occidentales dejaron a Irán sin acceso a sistemas de armas modernos occidentales —todos sus sistemas anteriores eran de origen estadounidense (F-14, F-4, Hawk)—, empujándolo inevitablemente hacia la órbita soviética/rusa.</p><p>El S-200 fue el primer sistema de defensa aérea verdaderamente moderno que Irán recibió y marcó el inicio de una relación defensiva con Rusia que culminaría con el S-300PMU-2 en 2016. Hoy, con el S-200 degradado y el S-300 parcialmente destruido, Irán se enfrenta a la necesidad de depender principalmente de sus sistemas domésticos (Bavar-373, Sayyad-3), acelerando el programa de independencia tecnológica en defensa aérea."},
+
+s300:{name:"S-300PMU-2 FAVORIT",arabic:"С-300 «Фаворит» · Código OTAN: SA-20 'Gargoyle'",type:"SAM Largo Alcance · Ruso · Estado degradado (2026)",color:"var(--gold)",desc:"El S-300PMU-2 es el sistema de defensa aérea más avanzado de origen ruso en el arsenal iraní. Recibido finalmente en 2016 tras una espera de 11 años bloqueada por sanciones, tiene capacidad de interceptar aviones, misiles de crucero y misiles balísticos de teatro. En 2024 fue parcialmente desactivado por Israel; en 2026 está en proceso de reconstitución.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/S-300PMU2_Iran.jpg/640px-S-300PMU2_Iran.jpg",caption:"S-300PMU-2 iraní en posición · 2016 · tras entrega rusa"},specs:[{v:"150 km",k:"Alcance aeronave"},{v:"25 km",k:"Alcance vs. balístico"},{v:"200+",k:"Blancos detectados"},{v:"M ~8",k:"Vel. interceptor"},{v:"4 baterías",k:"Entregadas 2016"},{v:"Degradado",k:"Estado 2026"}],range:{val:"150 km",pct:50,comps:[{n:"Bavar-373",km:200,pct:100},{n:"S-200",km:300,pct:67},{n:"Patriot PAC-3",km:160,pct:94}]},
+history:[{year:"2005",tag:"logro",title:"Contrato firmado con Rusia — 800 M$",desc:"Irán firma un contrato de 800 millones de dólares con Rusia para recibir el S-300. Fue el inicio de 11 años de bloqueo diplomático."},{year:"2010",tag:"fallo",title:"Rusia cancela el contrato por presión de Israel y EE.UU.",desc:"El presidente Medvedev firma un decreto bloqueando la venta por sanciones del CSNU (Resolución 1929). Irán amenaza con demandar a Rusia ante la corte de arbitraje de La Haya."},{year:"2016",tag:"logro",title:"Entrega final — 4 baterías S-300PMU-2",desc:"Tras el acuerdo nuclear JCPOA de 2015, Rusia levanta el bloqueo y completa la entrega a finales de 2016. Irán recibe 4 baterías completas: 48 lanzadores y 192 misiles."},{year:"2024",tag:"fallo",title:"Radares destruidos por Israel — 26 oct. 2024",desc:"Los ataques israelíes del 26 de octubre 2024 destruyeron los radares FLAP LID (30N6E2) críticos para el funcionamiento del S-300 en Isfahan y otras ubicaciones. Sin estos radares, el sistema no puede operar como estaba diseñado."},{year:"2025",tag:"uso",title:"Irán muestra S-300 en ejercicio — señal de resiliencia",desc:"Febrero 2025: Irán realiza un ejercicio conjunto donde el S-300 dispara un misil usando un radar doméstico iraní (Meraj-4) en lugar del radar ruso destruido, señalando que sigue teniendo alguna capacidad."},{year:"2026",tag:"prueba",title:"Lanzadores reaparecen en Teherán e Isfahan — feb. 2026",desc:"Imágenes satelitales de Planet Labs y Airbus de febrero 2026 muestran lanzadores S-300 reposicionados cerca de Teherán e Isfahan, pero sin los radares de control de fuego asociados. Estado operativo incierto."}],
+tech:[{l:"Misil",v:"48N6E2 (alcance 150 km)"},{l:"Radar búsqueda",v:"64N6E Big Bird (destruido oct. 2024)"},{l:"Radar tiro",v:"30N6E2 FLAP LID (destruido oct. 2024)"},{l:"Canales fuego",v:"6 blancos simultáneos"},{l:"Lanzadores",v:"5P85TE2 (semi-remolque)"},{l:"Estado 2026",v:"Capacidad degradada — radares perdidos"}],
+pros:["150 km de alcance contra aeronaves con alta precisión","Puede interceptar misiles de crucero y balísticos de teatro","6 canales de fuego simultáneos: antísaturación","El sistema más avanzado y validado internacionalmente que Irán ha tenido"],
+cons:["Radares clave destruidos por Israel en oct. 2024","Sin el 30N6E2 FLAP LID, el alcance y precisión se reducen drásticamente","Dependiente de Rusia para mantenimiento y repuestos (actualmente imposible)","Irán no puede reemplazar los radares rusos destruidos con componentes propios de igual calidad"],
+geo:"<p>La historia del S-300 iraní es la historia de 11 años de presión geopolítica: desde la firma del contrato en 2005 hasta la entrega en 2016, Israel y EE.UU. trabajaron intensamente para bloquear el suministro, sabiendo que el S-300 era el único sistema que podría amenazar seriamente la fuerza aérea israelí sobre Irán. El fracaso de este bloqueo —cuando Rusia finalmente entregó el sistema en 2016 tras el JCPOA— fue considerado un fracaso estratégico por Israel.</p><p>La respuesta israelí fue decisiva: en octubre 2024, los F-35I israelíes —stealth diseñado específicamente para sobrevivir en entornos S-300/S-400— penetraron el espacio aéreo iraní y destruyeron precisamente los radares más críticos del sistema. El análisis posterior reveló que Israel había esperado pacientemente los 8 años necesarios para desarrollar la capacidad de neutralizar el S-300 antes de ejecutar el ataque. En 2026, Irán tiene los lanzadores pero no los radares, un sistema 'decapitado' que puede generar incertidumbre pero no la cobertura real para la que fue diseñado.</p>"},
+
+bavar:{name:"BAVAR-373",arabic:"باور — «Creencia / Fe»",type:"SAM Largo Alcance · Iraní · Equivalente doméstico del S-300",color:"var(--gold)",desc:"El Bavar-373 es el sistema de defensa aérea de largo alcance más avanzado desarrollado por Irán, creado precisamente porque Rusia bloqueó el S-300 durante 11 años. Opera en 6 canales de fuego simultáneos e incorpora el radar AESA Meraj-4, siendo el pilar de la defensa aérea iraní postcombate 2024-2026.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Bavar-373_Iran.jpg/640px-Bavar-373_Iran.jpg",caption:"Sistema Bavar-373 con radar Meraj-4 · Inauguración oficial 2019"},specs:[{v:"200 km",k:"Alcance"},{v:"32 km",k:"Alt. máxima"},{v:"6 blancos",k:"Simultáneos"},{v:"M ~8",k:"Vel. interceptor"},{v:"2019",k:"Operativo"},{v:"Sayyad-4",k:"Misil interceptor"}],range:{val:"200 km",pct:67,comps:[{n:"S-300PMU-2",km:150,pct:75},{n:"Patriot PAC-3",km:160,pct:80},{n:"S-400",km:400,pct:50}]},
+history:[{year:"2010",tag:"logro",title:"Inicio del programa — respuesta al bloqueo del S-300",desc:"Cuando Rusia bloqueó el S-300 por presión occidental, Teherán lanzó el programa Bavar con el objetivo de crear un sistema completamente doméstico de largo alcance."},{year:"2016",tag:"prueba",title:"Primera demostración pública de componentes",desc:"Irán mostró componentes del sistema en exposición militar. EE.UU. e Israel expresaron escepticismo."},{year:"2019",tag:"logro",title:"Inauguración operativa — el presidente Rouhani",desc:"El presidente Rouhani inauguró el sistema en agosto 2019, afirmando que superaba en varias características al S-300 original."},{year:"2022",tag:"logro",title:"Integración en red de defensa aérea multicapa",desc:"El Bavar-373 fue integrado junto al Sayyad-3 y radares de alerta temprana creando cobertura multicapa sobre instalaciones críticas."},{year:"2025",tag:"fallo",title:"Limitaciones expuestas ante ataques israelíes (jun. 2025)",desc:"Durante la guerra de 12 días, ataques israelíes con misiles antiirradiación (HARM/AARGM-ER) y guerra electrónica degradaron la cobertura del Bavar-373."},{year:"2026",tag:"uso",title:"Se convierte en el SAM principal de Irán",desc:"Con el S-300 degradado, el Bavar-373 se convierte en el sistema de largo alcance más fiable de Irán, integrándose con los lanzadores S-300 usando su radar Meraj-4 como sensor alternativo."}],
+tech:[{l:"Radar búsqueda",v:"Meraj-4 (AESA, 3D, largo alcance)"},{l:"Radar tiro",v:"Fase array activa"},{l:"Canales fuego",v:"6 blancos simultáneos"},{l:"Misil interceptor",v:"Sayyad-4 (alcance 200 km)"},{l:"Alt. min. intercepción",v:"~300 metros"},{l:"Movilidad",v:"Totalmente móvil en TEL 8×8"}],
+pros:["Multi-blanco simultáneo (6 canales): antísaturación","100% iraní: inmune a sanciones de componentes y repuestos","Cubre aviones, cruceros y balísticos","El radar Meraj-4 AESA puede integrarse con S-300 degradado"],
+cons:["Capacidades reales parcialmente inciertas (no probado antes de 2025)","Vulnerabilidades ante ataques SEAD israelíes (2025)","Radar AESA perturbable por guerra electrónica avanzada","Pocas baterías operativas: solo cubre instalaciones prioritarias"],
+geo:"<p>El Bavar-373 simboliza la apuesta iraní por la autosuficiencia estratégica en defensa: en lugar de depender indefinidamente de sistemas rusos vulnerables a presiones diplomáticas, Irán invirtió dos décadas en crear un equivalente doméstico. El resultado es un sistema que en 2026 se ha convertido en más relevante que el S-300 que pretendía sustituir, precisamente porque los radares del S-300 fueron destruidos por Israel y el Bavar-373 sigue operativo.</p><p>Crucialmente, el Meraj-4 AESA del Bavar-373 está siendo usado para 'reanimar' parcialmente los lanzadores S-300 que sobrevivieron a los ataques israelíes: sin el radar ruso 30N6E2, los lanzadores S-300 son inútiles como sistema, pero con el Meraj-4 como sensor alternativo, Irán puede crear una capacidad híbrida parcialmente funcional. Esta integración forzada por circunstancias de combate es uno de los desarrollos más interesantes de la defensa aérea iraní en 2026."},
+
+sayyad:{name:"SAYYAD-3",arabic:"صیاد — «Cazador»",type:"SAM Medio Alcance · Iraní · El más numeroso del inventario",color:"var(--gold)",desc:"El Sayyad-3 es el interceptor de media capa del sistema de defensa aérea multicapa iraní. Con guiado por radar activo (no necesita iluminación continua desde tierra), es el SAM más numeroso del inventario iraní y el componente central de la defensa de instalaciones nucleares y bases del IRGC.",img:{url:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Sayyad-3_missile_Iran.jpg/640px-Sayyad-3_missile_Iran.jpg",caption:"Misil Sayyad-3 en lanzador Talash · Fuerzas Armadas Iraníes"},specs:[{v:"120 km",k:"Alcance"},{v:"M 4.5",k:"Vel. interceptor"},{v:"~27 kg",k:"Ojiva"},{v:"Radar activo",k:"Guiado terminal"},{v:"14 m",k:"Longitud"},{v:"2019",k:"Producción masiva"}],range:{val:"120 km",pct:40,comps:[{n:"Patriot PAC-3",km:160,pct:75},{n:"S-300",km:150,pct:80},{n:"Bavar-373",km:200,pct:60}]},
+history:[{year:"2014",tag:"prueba",title:"Primer ensayo exitoso en altitudes medias",desc:"Ensayo exitoso contra blanco aéreo. El sistema demostró guiado activo sin iluminación continua de radar de tierra."},{year:"2016",tag:"logro",title:"Integración en sistema Talash — protección de Natanz",desc:"El Sayyad-3 fue integrado como elemento central del sistema Talash, creando defensa de punto alrededor de Natanz e instalaciones nucleares."},{year:"2019",tag:"logro",title:"Producción en masa — el SAM más numeroso del arsenal",desc:"El Ministerio de Defensa anunció producción en serie. Con cientos de unidades desplegadas, es el SAM con mayor disponibilidad del inventario iraní."},{year:"2023",tag:"uso",title:"Múltiples activaciones ante objetos sobre instalaciones sensibles",desc:"Sistemas Sayyad-3 fueron activados frente a objetos aéreos no identificados sobre instalaciones clave durante 2023."},{year:"2026",tag:"uso",title:"Se convierte en la columna vertebral de la defensa media",desc:"Con el S-200 degradado y el S-300 sin radares, el Sayyad-3 asume un papel más crítico en la defensa de punto de instalaciones estratégicas iraníes."}],
+tech:[{l:"Guiado",v:"Radar activo TVM + INS"},{l:"Lanzador",v:"TEL de 4 misiles"},{l:"Alt. operativa",v:"300 m – 27.000 m"},{l:"Integración",v:"Sistema Talash + Bavar-373"},{l:"Resistencia ECM",v:"Diseño hardened vs. jamming"},{l:"Reacción",v:"~10 segundos"}],
+pros:["Guiado activo: no necesita iluminación continua","~10 s de reacción: muy rápido","Alta movilidad: desplegable en horas","Producción masiva: cobertura amplia del territorio iraní"],
+cons:["120 km: inferior al Patriot PAC-3 (160 km) o S-300 (150 km)","F-35 con JASSM-ER puede atacar desde fuera de su envelope","Saturable por ataques coordinados con muchos misiles simultáneos","Tecnología 2014-2016: en desventaja ante guerra electrónica avanzada actual"],
+geo:"<p>El Sayyad-3 es la respuesta iraní a una lección aprendida dolorosamente en la guerra del Golfo de 1991: sin defensa aérea de punto moderno, cualquier instalación crítica es vulnerable a ataques de precisión. Irán observó cómo las deficiencias del sistema SAM iraquí permitieron a la coalición destruir con precisión docenas de instalaciones estratégicas.</p><p>En 2026, con el S-200 y S-300 degradados por los ataques israelíes, el Sayyad-3 se ha convertido en el elemento más fiable de la defensa aérea iraní de mediana capa —no porque sea el más avanzado sino porque es el más numeroso y el que mejor ha sobrevivido a los ataques preventivos israelíes, precisamente por su movilidad y distribución geográfica."}
+};
+
+// ─── MISSILE ORDER ───────────────────────────────────────────────────────────
+const MISSILE_ORDER = ['shahab12','qiam','fateh110','zolfaghar','shahab3','ghadr','emad','sejjil','khorramshahr','kheibar','fattah','yaali','soumar','shahed136','noor','khalij','s200','s300','bavar','sayyad'];
+let currentId = null;
+
+// ─── SELECT & PREVIEW ────────────────────────────────────────────────────────
+function selectMissile(id, row) {
+  document.querySelectorAll('.missile-row').forEach(r => r.style.background = '');
+  if (row) row.style.background = 'var(--card-hover)';
+  currentId = id;
+  const d = D[id]; if (!d) return;
+  const pv = document.getElementById('previewContent');
+  document.getElementById('pvEye').textContent = d.type;
+  document.getElementById('pvEye').style.color = d.color;
+  document.getElementById('pvName').textContent = d.name;
+  document.getElementById('pvName').style.color = d.color;
+  document.getElementById('pvArabic').textContent = d.arabic;
+  document.getElementById('pvDesc').textContent = d.desc;
+  document.getElementById('pvHero').style.color = d.color;
+  document.getElementById('pvSpecs').innerHTML = d.specs.slice(0,6).map(s =>
+    `<div class="spec-cell"><div class="spec-v" style="color:${d.color}">${s.v}</div><div class="spec-k">${s.k}</div></div>`).join('');
+  document.getElementById('detailEmpty').style.display = 'none';
+  pv.classList.remove('visible'); void pv.offsetWidth; pv.classList.add('visible');
+  if (window.innerWidth < 960) document.getElementById('detailPanel').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ─── OPEN MODAL ──────────────────────────────────────────────────────────────
+function openModal(id) {
+  const tid = id || currentId;
+  if (!tid) return;
+  currentId = tid;
+  const d = D[tid];
+  if (!d) return;
+  // Hero
+  document.getElementById('mEyebrow').textContent = d.type;
+  document.getElementById('mEyebrow').style.color = d.color;
+  document.getElementById('mName').textContent = d.name;
+  document.getElementById('mName').style.color = d.color;
+  document.getElementById('mArabic').textContent = d.arabic;
+  document.getElementById('mDesc').textContent = d.desc;
+  document.getElementById('mHeroLeft').style.color = d.color;
+  // Image
+  const imgEl = document.getElementById('mHeroImg');
+  if (d.img && d.img.url) {
+    imgEl.innerHTML = `<img src="${d.img.url}" alt="${d.name}" onerror="this.parentElement.innerHTML='<div class=\\'m-img-placeholder\\'><div class=\\'m-img-placeholder-icon\\'>🚀</div><p>Imagen no disponible</p></div>'"><div class="m-img-caption">${d.img.caption||''}</div>`;
+  } else {
+    imgEl.innerHTML = `<div class="m-img-placeholder"><div class="m-img-placeholder-icon">🚀</div><p>${d.name}</p></div>`;
+  }
+  // Specs
+  document.getElementById('mSpecs').innerHTML = d.specs.map(s =>
+    `<div class="m-spec"><div class="m-spec-v" style="color:${d.color}">${s.v}</div><div class="m-spec-k">${s.k}</div></div>`).join('');
+  // History tab
+  const tagMap = {uso:'tag-uso',logro:'tag-logro',fallo:'tag-fallo',prueba:'tag-prueba'};
+  const tagLabel = {uso:'Uso en combate',logro:'Logro',fallo:'Problema/Fallo',prueba:'Ensayo'};
+  document.getElementById('mt-historia').innerHTML = `<div class="timeline">${
+    d.history.map((e,i) => `<div class="t-event" style="animation-delay:${i*.07}s">
+      <div style="color:${d.color};position:absolute;left:-19px;top:4px;width:8px;height:8px;border-radius:50%;border:1.5px solid ${d.color};background:var(--bg)"></div>
+      <div class="t-year" style="color:${d.color}">${e.year}</div>
+      <span class="t-tag ${tagMap[e.tag]}">${tagLabel[e.tag]}</span>
+      <div class="t-title">${e.title}</div>
+      <div class="t-desc">${e.desc}</div>
+    </div>`).join('')
+  }</div>`;
+  // Tech tab
+  document.getElementById('mt-tecnologia').innerHTML = `<div class="tech-grid">${
+    d.tech.map(t => `<div class="tech-item"><div class="tech-label">${t.l}</div><div class="tech-val">${t.v}</div></div>`).join('')
+  }</div>`;
+  // Analysis tab
+  document.getElementById('mt-analisis').innerHTML = `<div class="pros-cons">
+    <div class="pros-box"><div class="box-title">▲ Fortalezas</div>${d.pros.map(p=>`<div class="box-item">${p}</div>`).join('')}</div>
+    <div class="cons-box"><div class="box-title">▼ Limitaciones</div>${d.cons.map(c=>`<div class="box-item">${c}</div>`).join('')}</div>
+  </div>`;
+
+  // ── Range tab: SVG map + international comparison ──────────────────────
+  // Teheran coords in our SVG map (600x360 viewBox showing MENA+Europe)
+  // Map covers roughly lon -10..70, lat 10..65
+  const MAP_W = 600, MAP_H = 360;
+  const MAP_LON_MIN = -12, MAP_LON_MAX = 72, MAP_LAT_MIN = 8, MAP_LAT_MAX = 66;
+  function lonToX(lon){ return (lon - MAP_LON_MIN)/(MAP_LON_MAX - MAP_LON_MIN)*MAP_W; }
+  function latToY(lat){ return (1-(lat - MAP_LAT_MIN)/(MAP_LAT_MAX - MAP_LAT_MIN))*MAP_H; }
+  // Tehran ~35.7N, 51.4E
+  const TH_X = lonToX(51.4), TH_Y = latToY(35.7);
+  // km -> approx degrees latitude (1deg lat ≈ 111 km)
+  const KM_TABLE={shahab12:500,qiam:750,fateh110:300,zolfaghar:700,shahab3:1300,ghadr:1950,emad:1700,sejjil:2500,khorramshahr:2000,kheibar:2000,fattah:1400,yaali:700,soumar:2500,shahed136:2500,noor:170,khalij:300,s200:300,s300:150,bavar:200,sayyad:120};
+  const rangeKm = KM_TABLE[tid] || d.range.kmVal || 1000;
+  const degRadius = rangeKm / 111;
+  // Convert degrees radius to SVG pixels (use latitude scale)
+  const svgRadius = degRadius / (MAP_LAT_MAX - MAP_LAT_MIN) * MAP_H;
+  // City dots
+  const cities = [
+    {name:'Teherán',lon:51.4,lat:35.7,own:true},
+    {name:'Tel Aviv',lon:34.8,lat:32.1},{name:'Riad',lon:46.7,lat:24.7},
+    {name:'Bagdad',lon:44.4,lat:33.3},{name:'Dubai',lon:55.3,lat:25.2},
+    {name:'Ankara',lon:32.9,lat:39.9},{name:'El Cairo',lon:31.2,lat:30.1},
+    {name:'Roma',lon:12.5,lat:41.9},{name:'Moscú',lon:37.6,lat:55.8},
+    {name:'Delhi',lon:77.2,lat:28.6},{name:'Londres',lon:-0.1,lat:51.5},
+    {name:'Kabul',lon:69.2,lat:34.5},{name:'Karachi',lon:67.0,lat:24.9},
+    {name:'Erbil',lon:44.0,lat:36.2},{name:'Doha',lon:51.5,lat:25.3},
+    {name:'Al Udeid',lon:51.3,lat:25.1}
+  ];
+  function cityInRange(c){ 
+    const dx=(c.lon-51.4)*Math.cos(35.7*Math.PI/180)*111;
+    const dy=(c.lat-35.7)*111;
+    return Math.sqrt(dx*dx+dy*dy) <= rangeKm;
+  }
+  // Draw land masses (simplified polygons)
+  const landPaths = `
+    M${lonToX(36)},${latToY(37)} L${lonToX(42)},${latToY(37)} L${lonToX(44)},${latToY(40)} L${lonToX(46)},${latToY(42)} L${lonToX(40)},${latToY(43)} L${lonToX(36)},${latToY(40)} Z
+    M${lonToX(26)},${latToY(38)} L${lonToX(36)},${latToY(38)} L${lonToX(36)},${latToY(42)} L${lonToX(44)},${latToY(42)} L${lonToX(44)},${latToY(40)} L${lonToX(46)},${latToY(38)} L${lonToX(58)},${latToY(38)} L${lonToX(62)},${latToY(36)} L${lonToX(66)},${latToY(36)} L${lonToX(70)},${latToY(33)} L${lonToX(68)},${latToY(24)} L${lonToX(60)},${latToY(22)} L${lonToX(55)},${latToY(23)} L${lonToX(50)},${latToY(24)} L${lonToX(44)},${latToY(22)} L${lonToX(42)},${latToY(20)} L${lonToX(37)},${latToY(20)} L${lonToX(32)},${latToY(26)} L${lonToX(25)},${latToY(30)} L${lonToX(24)},${latToY(35)} L${lonToX(26)},${latToY(38)} Z
+    M${lonToX(-10)},${latToY(36)} L${lonToX(0)},${latToY(36)} L${lonToX(8)},${latToY(38)} L${lonToX(16)},${latToY(42)} L${lonToX(18)},${latToY(46)} L${lonToX(14)},${latToY(52)} L${lonToX(8)},${latToY(55)} L${lonToX(-4)},${latToY(54)} L${lonToX(-8)},${latToY(48)} L${lonToX(-10)},${latToY(44)} L${lonToX(-10)},${latToY(36)} Z
+    M${lonToX(14)},${latToY(46)} L${lonToX(24)},${latToY(48)} L${lonToX(30)},${latToY(52)} L${lonToX(40)},${latToY(56)} L${lonToX(28)},${latToY(60)} L${lonToX(22)},${latToY(58)} L${lonToX(14)},${latToY(54)} L${lonToX(14)},${latToY(46)} Z
+    M${lonToX(24)},${latToY(40)} L${lonToX(30)},${latToY(38)} L${lonToX(36)},${latToY(38)} L${lonToX(36)},${latToY(42)} L${lonToX(28)},${latToY(42)} L${lonToX(24)},${latToY(40)} Z
+    M${lonToX(25)},${latToY(30)} L${lonToX(37)},${latToY(22)} L${lonToX(37)},${latToY(12)} L${lonToX(42)},${latToY(12)} L${lonToX(50)},${latToY(14)} L${lonToX(46)},${latToY(24)} L${lonToX(44)},${latToY(22)} L${lonToX(37)},${latToY(20)} L${lonToX(34)},${latToY(26)} L${lonToX(28)},${latToY(30)} Z
+  `;
+  const svgMap = `<svg viewBox="0 0 ${MAP_W} ${MAP_H}" style="width:100%;height:auto;display:block;background:#0a0f14;border-radius:2px">
+    <defs>
+      <radialGradient id="rangeGrad_${tid}" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="${d.color}" stop-opacity="0.18"/>
+        <stop offset="70%" stop-color="${d.color}" stop-opacity="0.08"/>
+        <stop offset="100%" stop-color="${d.color}" stop-opacity="0"/>
+      </radialGradient>
+      <clipPath id="rangeClip_${tid}">
+        <circle cx="${TH_X}" cy="${TH_Y}" r="${svgRadius}"/>
+      </clipPath>
+    </defs>
+    <!-- Ocean grid -->
+    ${Array.from({length:9},(_,i)=>`<line x1="${i*75}" y1="0" x2="${i*75}" y2="${MAP_H}" stroke="rgba(255,255,255,.04)" stroke-width="1"/>`).join('')}
+    ${Array.from({length:7},(_,i)=>`<line x1="0" y1="${i*60}" x2="${MAP_W}" y2="${i*60}" stroke="rgba(255,255,255,.04)" stroke-width="1"/>`).join('')}
+    <!-- Land masses -->
+    <path d="${landPaths}" fill="#1a2030" stroke="#252d3e" stroke-width="0.8"/>
+    <!-- Range fill -->
+    <circle cx="${TH_X}" cy="${TH_Y}" r="${svgRadius}" fill="url(#rangeGrad_${tid})"/>
+    <!-- Range ring -->
+    <circle cx="${TH_X}" cy="${TH_Y}" r="${svgRadius}" fill="none" stroke="${d.color}" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.7"/>
+    <!-- Cities -->
+    ${cities.map(c => {
+      const cx2=lonToX(c.lon), cy2=latToY(c.lat);
+      const inR=cityInRange(c);
+      if (c.own) return `<circle cx="${cx2}" cy="${cy2}" r="5" fill="${d.color}" opacity="0.9"/>
+        <text x="${cx2+7}" y="${cy2+4}" fill="${d.color}" font-size="9" font-family="Barlow,sans-serif" font-weight="700">${c.name}</text>`;
+      const col = inR ? '#ff6b6b' : 'rgba(255,255,255,0.35)';
+      return `<circle cx="${cx2}" cy="${cy2}" r="${inR?3.5:2}" fill="${col}"/>
+        <text x="${cx2+5}" y="${cy2+3}" fill="${col}" font-size="8" font-family="Barlow,sans-serif">${c.name}</text>`;
+    }).join('')}
+    <!-- Range label -->
+    <text x="${TH_X}" y="${TH_Y - svgRadius - 6}" text-anchor="middle" fill="${d.color}" font-size="10" font-family="'Bebas Neue',cursive" letter-spacing="2">${rangeKm} KM</text>
+    <!-- Scale bar -->
+    <line x1="20" y1="${MAP_H-15}" x2="${20 + Math.min(500/111*(MAP_W/(MAP_LON_MAX-MAP_LON_MIN)),120)}" y2="${MAP_H-15}" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+    <text x="20" y="${MAP_H-4}" fill="rgba(255,255,255,.4)" font-size="8" font-family="Barlow,sans-serif">500 km</text>
+  </svg>`;
+
+  // International comparison data per missile
+  const intlComp = {
+    shahab12: [{c:'🇰🇵 Corea N.',n:'Scud-B',km:300,gen:'1960s'},{c:'🇷🇺 Rusia',n:'Iskander-M',km:500,gen:'2000s'},{c:'🇵🇰 Pakistán',n:'Hatf-2',km:180,gen:'1990s'}],
+    qiam: [{c:'🇰🇵 Corea N.',n:'Scud-C',km:600,gen:'1980s'},{c:'🇮🇶 Iraq',n:'Al Hussein',km:650,gen:'1980s'},{c:'🇷🇺 Rusia',n:'9K720 Iskander',km:500,gen:'2000s'}],
+    fateh110: [{c:'🇺🇸 EE.UU.',n:'ATACMS Blk-I',km:300,gen:'1990s'},{c:'🇷🇺 Rusia',n:'Iskander-M',km:500,gen:'2000s'},{c:'🇨🇳 China',n:'DF-15B',km:600,gen:'2000s'}],
+    zolfaghar: [{c:'🇷🇺 Rusia',n:'Iskander-M',km:500,gen:'2000s'},{c:'🇺🇸 EE.UU.',n:'ATACMS PrSM',km:700,gen:'2023'},{c:'🇰🇷 Corea S.',n:'Hyunmoo-2A',km:500,gen:'2010s'}],
+    shahab3: [{c:'🇰🇵 Corea N.',n:'Nodong-1',km:1300,gen:'1990s'},{c:'🇵🇰 Pakistán',n:'Ghauri-I',km:1200,gen:'1990s'},{c:'🇮🇳 India',n:'Agni-I',km:700,gen:'2000s'}],
+    ghadr: [{c:'🇷🇺 Rusia',n:'Iskander-K',km:2000,gen:'2010s'},{c:'🇨🇳 China',n:'DF-21A',km:2150,gen:'1990s'},{c:'🇮🇳 India',n:'Agni-II',km:2000,gen:'2000s'}],
+    emad: [{c:'🇨🇳 China',n:'DF-21C',km:1700,gen:'2000s'},{c:'🇷🇺 Rusia',n:'Tochka-U',km:120,gen:'1980s'},{c:'🇮🇳 India',n:'Agni-IP',km:750,gen:'2010s'}],
+    sejjil: [{c:'🇨🇳 China',n:'DF-26',km:4000,gen:'2016'},{c:'🇮🇳 India',n:'Agni-III',km:3500,gen:'2010s'},{c:'🇰🇵 Corea N.',n:'Hwasong-12',km:4500,gen:'2017'}],
+    khorramshahr: [{c:'🇰🇵 Corea N.',n:'Hwasong-10',km:3500,gen:'2016'},{c:'🇨🇳 China',n:'DF-4',km:5500,gen:'1970s'},{c:'🇮🇳 India',n:'Agni-IV',km:4000,gen:'2010s'}],
+    kheibar: [{c:'🇷🇺 Rusia',n:'Iskander-M',km:500,gen:'2000s'},{c:'🇨🇳 China',n:'DF-26B',km:4000,gen:'2016'},{c:'🇺🇸 EE.UU.',n:'ATACMS PrSM',km:700,gen:'2023'}],
+    fattah: [{c:'🇷🇺 Rusia',n:'Kinzhal',km:2000,gen:'2017'},{c:'🇨🇳 China',n:'DF-17 HGV',km:2500,gen:'2019'},{c:'🇺🇸 EE.UU.',n:'LRHW Dark Eagle',km:2775,gen:'2025*'}],
+    yaali: [{c:'🇺🇸 EE.UU.',n:'JASSM-ER',km:925,gen:'2002'},{c:'🇷🇺 Rusia',n:'Kh-101',km:4500,gen:'2012'},{c:'🇫🇷 Francia',n:'SCALP-EG',km:550,gen:'2003'}],
+    soumar: [{c:'🇷🇺 Rusia',n:'Kh-55 (origen)',km:2500,gen:'1980s'},{c:'🇺🇸 EE.UU.',n:'Tomahawk',km:1850,gen:'1983'},{c:'🇨🇳 China',n:'CJ-10',km:2500,gen:'2004'}],
+    shahed136: [{c:'🇷🇺 Rusia',n:'Geran-2 (copia)',km:2500,gen:'2022'},{c:'🇮🇱 Israel',n:'Harop',km:1000,gen:'2009'},{c:'🇺🇸 EE.UU.',n:'AeroJet ALTIUS-600',km:450,gen:'2022'}],
+    noor: [{c:'🇫🇷 Francia',n:'Exocet AM39',km:70,gen:'1979'},{c:'🇺🇸 EE.UU.',n:'Harpoon Block II',km:130,gen:'2000s'},{c:'🇷🇺 Rusia',n:'Kh-35 (Uran)',km:130,gen:'2003'}],
+    khalij: [{c:'🇨🇳 China',n:'DF-21D (ASBM)',km:1500,gen:'2010'},{c:'🇺🇸 EE.UU.',n:'No equivalente',km:0,gen:'—'},{c:'🇷🇺 Rusia',n:'No desplegado',km:0,gen:'—'}],
+    s200: [{c:'🇷🇺 Rusia',n:'S-400 (sucesor)',km:400,gen:'2007'},{c:'🇺🇸 EE.UU.',n:'Patriot PAC-3',km:160,gen:'2001'},{c:'🇨🇳 China',n:'HQ-9B',km:200,gen:'2010s'}],
+    s300: [{c:'🇷🇺 Rusia',n:'S-400 Triumf',km:400,gen:'2007'},{c:'🇺🇸 EE.UU.',n:'Patriot PAC-3',km:160,gen:'2001'},{c:'🇨🇳 China',n:'HQ-9B',km:200,gen:'2010s'}],
+    bavar: [{c:'🇺🇸 EE.UU.',n:'Patriot PAC-3',km:160,gen:'2001'},{c:'🇷🇺 Rusia',n:'S-300PMU-2',km:150,gen:'2000s'},{c:'🇨🇳 China',n:'HQ-9B',km:200,gen:'2010s'}],
+    sayyad: [{c:'🇺🇸 EE.UU.',n:'Patriot PAC-2',km:100,gen:'1991'},{c:'🇷🇺 Rusia',n:'Buk-M3',km:70,gen:'2016'},{c:'🇨🇳 China',n:'HQ-16',km:40,gen:'2006'}]
+  };
+  const comps = intlComp[tid] || [];
+  const maxKm = Math.max(rangeKm, ...comps.map(c=>c.km), 100);
+
+  document.getElementById('mt-alcance').innerHTML = `
+    <div class="m-section-title">Mapa de alcance desde Teherán</div>
+    <div style="margin-bottom:20px;border-radius:4px;overflow:hidden;border:1px solid var(--border)">${svgMap}</div>
+    <div style="display:flex;gap:14px;margin-bottom:8px;flex-wrap:wrap">
+      <span style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${d.color}"></span>Teherán (origen)</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ff6b6b"></span>Ciudad dentro del alcance</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.35)"></span>Fuera del alcance</span>
+    </div>
+    <div class="m-section-title" style="margin-top:24px">Comparativa internacional</div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:2px;overflow:hidden">
+      <div style="display:grid;grid-template-columns:140px 1fr 70px 50px;padding:8px 14px;border-bottom:1px solid var(--border);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)">
+        <span>Sistema</span><span>Alcance comparado</span><span>Alcance</span><span>Año</span>
+      </div>
+      <div style="display:grid;grid-template-columns:140px 1fr 70px 50px;padding:10px 14px;border-bottom:1px solid var(--border);align-items:center">
+        <span style="font-size:12px;font-weight:700;color:${d.color}">🇮🇷 ${d.name.split('(')[0].trim()}</span>
+        <div style="height:6px;background:var(--border-bright);border-radius:3px;overflow:hidden;margin:0 10px"><div style="height:100%;width:${rangeKm/maxKm*100}%;background:${d.color};border-radius:3px"></div></div>
+        <span style="font-family:'Bebas Neue',cursive;font-size:14px;color:${d.color};text-align:right">${rangeKm} km</span>
+        <span style="font-size:9px;color:var(--muted);text-align:right">—</span>
+      </div>
+      ${comps.filter(c=>c.km>0).map(c=>`
+      <div style="display:grid;grid-template-columns:140px 1fr 70px 50px;padding:10px 14px;border-bottom:1px solid var(--border);align-items:center">
+        <span style="font-size:11px;color:var(--text)">${c.c} ${c.n}</span>
+        <div style="height:4px;background:var(--border-bright);border-radius:2px;overflow:hidden;margin:0 10px"><div style="height:100%;width:${c.km/maxKm*100}%;background:rgba(255,255,255,.25);border-radius:2px"></div></div>
+        <span style="font-family:'Bebas Neue',cursive;font-size:13px;color:var(--muted);text-align:right">${c.km} km</span>
+        <span style="font-size:9px;color:var(--muted2);text-align:right">${c.gen}</span>
+      </div>`).join('')}
+      ${comps.filter(c=>c.km===0).map(c=>`
+      <div style="display:grid;grid-template-columns:140px 1fr 70px 50px;padding:10px 14px;border-bottom:1px solid var(--border);align-items:center;opacity:.5">
+        <span style="font-size:11px;color:var(--text)">${c.c} ${c.n}</span>
+        <span style="font-size:10px;color:var(--muted);margin:0 10px;font-style:italic">${c.gen}</span>
+        <span></span><span></span>
+      </div>`).join('')}
+    </div>`;
+  setTimeout(() => {
+    document.querySelectorAll('.range-bar-fill').forEach(el => {
+      el.style.width = el.getAttribute('data-pct') + '%';
+    });
+  }, 100);
+
+  // Geopolitics tab
+  document.getElementById('mt-geopolitica').innerHTML = `<div class="geo-text">${d.geo}</div>`;
+  // Side col
+  document.getElementById('mSideCol').innerHTML = `
+    <div class="m-section-title">Especificaciones</div>
+    <div class="tech-grid">${d.tech.map(t => `<div class="tech-item"><div class="tech-label">${t.l}</div><div class="tech-val">${t.v}</div></div>`).join('')}</div>
+  `;
+  // Nav
+  const idx = MISSILE_ORDER.indexOf(tid);
+  document.getElementById('mNavCenter').textContent = `${idx+1} / ${MISSILE_ORDER.length}`;
+  document.getElementById('mPrevBtn').disabled = idx === 0;
+  document.getElementById('mPrevBtn').style.opacity = idx === 0 ? '.3' : '1';
+  document.getElementById('mNextBtn').disabled = idx === MISSILE_ORDER.length - 1;
+  document.getElementById('mNextBtn').style.opacity = idx === MISSILE_ORDER.length-1 ? '.3' : '1';
+  // Show
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('modalContent').scrollTop = 0;
+  mTab('historia', document.querySelector('.m-tab-btn'));
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function navModal(dir) {
+  const idx = MISSILE_ORDER.indexOf(currentId);
+  const next = idx + dir;
+  if (next < 0 || next >= MISSILE_ORDER.length) return;
+  const newId = MISSILE_ORDER[next];
+  const row = document.querySelector(`.missile-row[data-id="${newId}"]`);
+  selectMissile(newId, row);
+  openModal(newId);
+}
+
+function mTab(name, btn) {
+  document.querySelectorAll('.m-tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.m-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('mt-' + name).classList.add('active');
+  const labels = {historia:'Historia',tecnologia:'Tecnología',analisis:'Análisis',alcance:'Alcance',geopolitica:'Geopolítica'};
+  document.querySelectorAll('.m-tab-btn').forEach(b => { if (b.textContent === labels[name]) b.classList.add('active'); });
+}
+
+// ─── FILTER ──────────────────────────────────────────────────────────────────
+function setFilter(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.missile-row').forEach(row => {
+    row.classList.toggle('hidden', type !== 'all' && !row.classList.contains('cat-' + type));
+  });
+  document.querySelectorAll('.category-header').forEach(h => {
+    const cat = h.getAttribute('data-cat');
+    h.style.display = (type === 'all' || cat === type) ? '' : 'none';
+  });
+}
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (document.getElementById('modalOverlay').classList.contains('open')) {
+    if (e.key === 'ArrowRight') navModal(1);
+    if (e.key === 'ArrowLeft') navModal(-1);
+  }
+});
+
+
+</script>
+</body>
+</html>
